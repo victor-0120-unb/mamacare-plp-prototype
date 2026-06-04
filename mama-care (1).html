@@ -1,0 +1,2722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MamaCare — Your African Pregnancy Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --earth: #2C1A0E;
+    --terracotta: #C4622D;
+    --saffron: #E8A020;
+    --cream: #FAF3E8;
+    --sage: #6B8F5E;
+    --dusty-rose: #D4847A;
+    --warm-white: #FDF8F0;
+    --deep-green: #1E3D2F;
+    --ochre: #B8860B;
+    --sand: #DEC99A;
+    --muted: #7A6855;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--earth);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: var(--earth);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(44,26,14,0.35);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: var(--saffron);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    color: var(--cream);
+    font-size: 1.4rem;
+    letter-spacing: 0.02em;
+  }
+  .logo-text span { color: var(--saffron); }
+  .header-right {
+    display: flex; gap: 12px; align-items: center;
+  }
+  .sms-badge {
+    background: var(--sage);
+    color: white;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .week-badge {
+    background: var(--terracotta);
+    color: white;
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(135deg, var(--earth) 0%, #4A2E18 60%, var(--deep-green) 100%);
+    padding: 56px 24px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 80% 20%, rgba(232,160,32,0.18) 0%, transparent 50%),
+      radial-gradient(circle at 10% 90%, rgba(196,98,45,0.2) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .hero-pattern {
+    position: absolute; top: 0; right: 0;
+    width: 200px; height: 200px;
+    opacity: 0.07;
+    background-image: repeating-linear-gradient(45deg, var(--saffron) 0, var(--saffron) 1px, transparent 0, transparent 50%);
+    background-size: 14px 14px;
+  }
+  .hero-content { position: relative; max-width: 640px; }
+  .greeting {
+    font-family: 'Crimson Pro', serif;
+    color: var(--sand);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--cream);
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--saffron); }
+  .hero-sub {
+    color: var(--sand);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 28px;
+    font-weight: 300;
+  }
+  .week-ring {
+    display: flex; align-items: center; gap: 20px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 16px 20px;
+    backdrop-filter: blur(10px);
+    max-width: 400px;
+  }
+  .ring-visual {
+    position: relative; width: 60px; height: 60px; flex-shrink: 0;
+  }
+  .ring-visual svg { width: 60px; height: 60px; transform: rotate(-90deg); }
+  .ring-visual .ring-bg { stroke: rgba(255,255,255,0.15); fill: none; stroke-width: 4; }
+  .ring-visual .ring-fill { stroke: var(--saffron); fill: none; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 163; stroke-dashoffset: 60; transition: stroke-dashoffset 1s ease; }
+  .ring-num {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; color: var(--saffron);
+  }
+  .ring-info { color: var(--cream); }
+  .ring-info strong { font-family: 'Playfair Display', serif; font-size: 1rem; display: block; }
+  .ring-info small { color: var(--sand); font-size: 0.8rem; }
+
+  /* ─── PROFILE SETUP ─── */
+  .setup-section {
+    background: var(--cream);
+    border-bottom: 2px solid var(--sand);
+    padding: 28px 24px;
+    display: none;
+  }
+  .setup-section.visible { display: block; }
+  .setup-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--earth);
+    margin-bottom: 16px;
+  }
+  .setup-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .field-group label {
+    display: block;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  .field-group input, .field-group select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--sand);
+    border-radius: 10px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--earth);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field-group input:focus, .field-group select:focus {
+    border-color: var(--terracotta);
+  }
+  .btn-start {
+    margin-top: 16px;
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    padding: 13px 32px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .btn-start:hover { background: var(--earth); transform: translateY(-1px); }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main { max-width: 900px; margin: 0 auto; padding: 24px 16px 80px; }
+
+  /* ─── SECTION TITLE ─── */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--earth);
+    margin-bottom: 4px;
+  }
+  .section-sub {
+    font-size: 0.83rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  /* ─── CARDS ─── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .card {
+    background: white;
+    border-radius: 16px;
+    border: 1.5px solid rgba(222,201,154,0.4);
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(44,26,14,0.06);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,26,14,0.12); }
+  .card-accent {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .card-icon {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .card-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--earth);
+    margin-bottom: 8px;
+  }
+  .card-body {
+    font-size: 0.85rem;
+    color: #5A4A38;
+    line-height: 1.6;
+  }
+
+  /* ─── BABY DEVELOPMENT ─── */
+  .baby-card {
+    background: linear-gradient(135deg, var(--deep-green), #2A5240);
+    border-radius: 20px;
+    padding: 24px;
+    color: white;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .baby-card::after {
+    content: '🌿';
+    position: absolute;
+    right: 20px; bottom: -5px;
+    font-size: 5rem;
+    opacity: 0.15;
+  }
+  .baby-card .card-label { color: rgba(255,255,255,0.6); }
+  .baby-card .section-title { color: white; margin-bottom: 4px; }
+  .baby-size {
+    display: flex; align-items: center; gap: 16px;
+    margin: 14px 0;
+  }
+  .size-fruit {
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem;
+    flex-shrink: 0;
+  }
+  .size-info strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    display: block;
+  }
+  .size-info small { opacity: 0.75; font-size: 0.82rem; }
+  .development-list {
+    list-style: none;
+    margin-top: 14px;
+  }
+  .development-list li {
+    padding: 5px 0;
+    font-size: 0.87rem;
+    opacity: 0.9;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .development-list li::before {
+    content: '◆';
+    color: var(--saffron);
+    font-size: 0.5rem;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  /* ─── NUTRITION ─── */
+  .nutrition-card {
+    background: white;
+    border-radius: 20px;
+    border: 1.5px solid rgba(107,143,94,0.3);
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .food-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 14px 0;
+  }
+  .food-tag {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--cream);
+    border: 1.5px solid var(--sand);
+    border-radius: 24px;
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    color: var(--earth);
+    font-weight: 500;
+    cursor: default;
+    transition: all 0.2s;
+  }
+  .food-tag:hover { background: var(--sage); color: white; border-color: var(--sage); }
+  .nutrition-tip {
+    background: linear-gradient(135deg, rgba(107,143,94,0.1), rgba(107,143,94,0.05));
+    border-left: 3px solid var(--sage);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    font-size: 0.86rem;
+    color: var(--deep-green);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* ─── SYMPTOM CHECKER ─── */
+  .symptom-section { margin-bottom: 28px; }
+  .symptom-chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 14px 0;
+  }
+  .chip {
+    padding: 8px 16px;
+    border-radius: 24px;
+    font-size: 0.83rem;
+    border: 1.5px solid var(--sand);
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--earth);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .chip:hover { border-color: var(--terracotta); color: var(--terracotta); }
+  .chip.selected { background: var(--terracotta); color: white; border-color: var(--terracotta); }
+  .chip.warning { border-color: #C44D1E; }
+  .chip.warning.selected { background: #C44D1E; }
+  .risk-banner {
+    background: linear-gradient(135deg, #FFF3E0, #FFE0CC);
+    border: 1.5px solid var(--terracotta);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex; gap: 12px; align-items: flex-start;
+    margin-top: 12px;
+    display: none;
+  }
+  .risk-banner.show { display: flex; }
+  .risk-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .risk-text strong { display: block; color: var(--terracotta); font-size: 0.9rem; margin-bottom: 4px; }
+  .risk-text p { font-size: 0.84rem; line-height: 1.55; color: #5A3520; }
+
+  /* ─── REMINDERS ─── */
+  .reminder-list { list-style: none; margin-bottom: 28px; }
+  .reminder-item {
+    display: flex; gap: 14px; align-items: center;
+    background: white;
+    border: 1.5px solid rgba(222,201,154,0.5);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+  }
+  .reminder-item:hover { border-color: var(--saffron); box-shadow: 0 4px 14px rgba(44,26,14,0.08); }
+  .reminder-item.done { opacity: 0.5; }
+  .reminder-item.done .r-title { text-decoration: line-through; }
+  .r-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .r-dot.green { background: var(--sage); }
+  .r-dot.orange { background: var(--terracotta); }
+  .r-dot.yellow { background: var(--saffron); }
+  .r-title { font-size: 0.9rem; font-weight: 500; color: var(--earth); }
+  .r-date { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .r-check {
+    margin-left: auto;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--sand);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 0.7rem;
+    color: var(--sage);
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .r-check:hover { border-color: var(--sage); background: var(--sage); color: white; }
+  .reminder-item.done .r-check { background: var(--sage); border-color: var(--sage); color: white; }
+
+  /* ─── CHAT ─── */
+  .chat-section { margin-bottom: 28px; }
+  .chat-window {
+    background: white;
+    border: 1.5px solid rgba(222,201,154,0.5);
+    border-radius: 20px;
+    overflow: hidden;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+  }
+  .chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .msg {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    animation: fadeUp 0.3s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .msg.user { flex-direction: row-reverse; }
+  .msg-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    color: white;
+  }
+  .msg.ai .msg-avatar { background: var(--earth); }
+  .msg-bubble {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 0.87rem;
+    line-height: 1.6;
+    position: relative;
+  }
+  .msg.ai .msg-bubble {
+    background: var(--cream);
+    border: 1px solid rgba(222,201,154,0.5);
+    border-bottom-left-radius: 4px;
+    color: var(--earth);
+  }
+  .msg.user .msg-bubble {
+    background: var(--terracotta);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .pin-btn {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: none; border: none;
+    cursor: pointer;
+    opacity: 0;
+    font-size: 0.75rem;
+    color: var(--muted);
+    transition: opacity 0.2s;
+    padding: 2px;
+  }
+  .msg-bubble:hover .pin-btn { opacity: 1; }
+  .pin-btn.pinned { opacity: 1; color: var(--saffron); }
+  .sms-toggle {
+    font-size: 0.7rem;
+    color: var(--sage);
+    margin-top: 6px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 4px;
+    font-weight: 500;
+  }
+  .sms-version {
+    display: none;
+    background: rgba(107,143,94,0.1);
+    border: 1px dashed var(--sage);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    color: var(--deep-green);
+    margin-top: 6px;
+    font-family: monospace;
+    line-height: 1.5;
+  }
+  .sms-version.show { display: block; }
+  .typing-indicator {
+    display: flex; gap: 4px; align-items: center;
+    padding: 12px 16px;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    animation: bounce 1.2s infinite;
+  }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); }
+  }
+  .chat-input-row {
+    display: flex;
+    padding: 12px 16px;
+    gap: 10px;
+    border-top: 1px solid rgba(222,201,154,0.4);
+    background: var(--cream);
+  }
+  .chat-input {
+    flex: 1;
+    padding: 11px 16px;
+    border: 1.5px solid var(--sand);
+    border-radius: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--earth);
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .chat-input:focus { border-color: var(--terracotta); }
+  .send-btn {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .send-btn:hover { background: var(--earth); transform: scale(1.05); }
+
+  /* ─── PINNED ─── */
+  .pinned-section {
+    margin-bottom: 28px;
+    display: none;
+  }
+  .pinned-section.has-pins { display: block; }
+  .pinned-list { display: flex; flex-direction: column; gap: 8px; }
+  .pinned-item {
+    background: linear-gradient(135deg, rgba(232,160,32,0.08), rgba(232,160,32,0.03));
+    border: 1.5px solid rgba(232,160,32,0.4);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    color: var(--earth);
+    line-height: 1.55;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .pinned-item::before { content: '📌'; font-size: 0.9rem; flex-shrink: 0; }
+
+  /* ─── MENTAL HEALTH ─── */
+  .mood-row {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin: 14px 0;
+  }
+  .mood-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    background: white;
+    border: 2px solid var(--sand);
+    border-radius: 14px;
+    padding: 12px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .mood-btn .emoji { font-size: 1.6rem; }
+  .mood-btn:hover { border-color: var(--terracotta); color: var(--terracotta); }
+  .mood-btn.selected { border-color: var(--saffron); background: rgba(232,160,32,0.08); color: var(--earth); }
+  .wellbeing-tip {
+    background: white;
+    border-radius: 14px;
+    border: 1.5px solid rgba(196,98,45,0.2);
+    padding: 16px 18px;
+    font-size: 0.87rem;
+    line-height: 1.65;
+    color: var(--earth);
+    display: none;
+  }
+  .wellbeing-tip.show { display: block; animation: fadeUp 0.3s ease; }
+
+  /* ─── QUICK TOPICS ─── */
+  .quick-topics {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin: 10px 0 18px;
+  }
+  .topic-btn {
+    background: var(--cream);
+    border: 1.5px solid var(--sand);
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--earth);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+  .topic-btn:hover { background: var(--earth); color: var(--cream); border-color: var(--earth); }
+
+  /* ─── BOTTOM NAV ─── */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 1.5px solid rgba(222,201,154,0.5);
+    display: flex;
+    z-index: 100;
+    box-shadow: 0 -4px 20px rgba(44,26,14,0.08);
+  }
+  .nav-btn {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 10px 4px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    color: var(--muted);
+    gap: 3px;
+    transition: color 0.2s;
+  }
+  .nav-btn .nav-icon { font-size: 1.2rem; }
+  .nav-btn.active { color: var(--terracotta); }
+  .nav-btn:hover { color: var(--earth); }
+
+  /* ─── PAGE VIEWS ─── */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeUp 0.3s ease; }
+
+  /* ─── PROGRESS BAR ─── */
+  .trimester-bar {
+    background: white;
+    border-radius: 16px;
+    border: 1.5px solid rgba(222,201,154,0.5);
+    padding: 18px 20px;
+    margin-bottom: 28px;
+  }
+  .tri-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .tri-bar {
+    height: 8px;
+    background: var(--cream);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .tri-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sage), var(--saffron), var(--terracotta));
+    border-radius: 8px;
+    width: 57%; /* week 22 of 40 */
+    transition: width 1s ease;
+  }
+  .tri-weeks {
+    display: flex; justify-content: space-between;
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+
+  /* ─── SCROLL ENHANCEMENT ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 4px; }
+
+  @media (max-width: 480px) {
+    .hero { padding: 36px 16px 32px; }
+    .main { padding: 16px 12px 80px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ─── INTAKE OVERLAY ─── */
+  .intake-overlay {
+    position: fixed; inset: 0;
+    background: rgba(44,26,14,0.7);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .intake-overlay.hidden { display: none; }
+  .intake-modal {
+    background: var(--warm-white);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 92vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(44,26,14,0.4);
+    animation: fadeUp 0.35s ease;
+  }
+  .intake-header {
+    background: linear-gradient(135deg, var(--earth), #4A2E18);
+    padding: 24px 28px;
+    border-radius: 24px 24px 0 0;
+    display: flex; gap: 14px; align-items: center;
+  }
+  .intake-logo {
+    width: 46px; height: 46px;
+    background: var(--saffron);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  .intake-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--cream);
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  .intake-sub { color: var(--sand); font-size: 0.82rem; margin-top: 2px; }
+  .intake-steps { padding: 24px 28px 28px; }
+  .intake-step { display: none; }
+  .intake-step.active { display: block; animation: fadeUp 0.25s ease; }
+  .step-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--terracotta);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .intake-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .intake-grid .field-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--sand);
+    border-radius: 10px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--earth);
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.2s;
+  }
+  .intake-grid .field-group textarea:focus { border-color: var(--terracotta); }
+  .btn-next {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    padding: 13px 28px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 16px;
+  }
+  .btn-next:hover { background: var(--earth); }
+  .btn-back {
+    background: white;
+    color: var(--earth);
+    border: 1.5px solid var(--sand);
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-back:hover { border-color: var(--earth); }
+  .btn-generate {
+    flex: 1;
+    background: linear-gradient(135deg, var(--terracotta), var(--ochre));
+    color: white;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .btn-generate:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(196,98,45,0.35); }
+  .btn-generate:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  @media (max-width: 480px) {
+    .intake-grid { grid-template-columns: 1fr; }
+    .intake-grid .field-group[style*="1/-1"] { grid-column: 1; }
+    .intake-modal { border-radius: 16px; }
+  }
+
+  /* ─── REPORT SECTION ─── */
+  .report-section {
+    background: var(--cream);
+    border-bottom: 2px solid var(--sand);
+  }
+  .report-header {
+    background: linear-gradient(135deg, var(--earth), #3A2010);
+    padding: 20px 24px;
+  }
+  .report-header-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .report-name {
+    font-family: 'Playfair Display', serif;
+    color: var(--cream);
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .report-meta { color: var(--sand); font-size: 0.82rem; margin-top: 2px; }
+  .btn-edit-profile {
+    background: rgba(255,255,255,0.12);
+    color: var(--cream);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-edit-profile:hover { background: rgba(255,255,255,0.2); }
+  .report-loading {
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .loading-dots { display: flex; gap: 8px; }
+  .ldot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    animation: bounce 1.2s infinite;
+  }
+  .ldot:nth-child(2) { animation-delay: 0.2s; background: var(--saffron); }
+  .ldot:nth-child(3) { animation-delay: 0.4s; background: var(--sage); }
+  .loading-text {
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-style: italic;
+  }
+  .report-body { padding: 20px 24px; }
+
+  /* Report blocks */
+  .report-block {
+    background: white;
+    border-radius: 16px;
+    border: 1.5px solid rgba(222,201,154,0.45);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    animation: fadeUp 0.3s ease;
+  }
+  .report-block-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .report-block-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .report-block-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.97rem;
+    color: var(--earth);
+    font-weight: 600;
+  }
+  .report-block-body {
+    font-size: 0.87rem;
+    color: #5A4A38;
+    line-height: 1.7;
+  }
+  .report-block-body ul { padding-left: 18px; margin-top: 6px; }
+  .report-block-body ul li { margin-bottom: 4px; }
+  .report-block.sms-block {
+    background: linear-gradient(135deg, var(--deep-green), #2A5240);
+    border-color: transparent;
+  }
+  .report-block.sms-block .report-block-title { color: white; }
+  .report-block.sms-block .report-block-body { color: rgba(255,255,255,0.9); }
+  .sms-text {
+    font-family: monospace;
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: #A8D5B5;
+    margin-top: 8px;
+    white-space: pre-wrap;
+  }
+  .copy-sms-btn {
+    margin-top: 10px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .copy-sms-btn:hover { background: rgba(255,255,255,0.25); }
+  .report-block.warning-block {
+    background: linear-gradient(135deg, #FFF3E0, #FFE0CC);
+    border-color: var(--terracotta);
+  }
+  .report-block.warning-block .report-block-title { color: var(--terracotta); }
+
+  /* ─── LANGUAGE TOGGLE ─── */
+  .lang-toggle {
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    display: flex; align-items: center; gap: 5px;
+    transition: all 0.2s;
+  }
+  .lang-toggle:hover { background: rgba(255,255,255,0.22); }
+
+  /* ─── CALENDAR ─── */
+  .cal-card {
+    background: white;
+    border-radius: 16px;
+    border: 1.5px solid rgba(222,201,154,0.45);
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(44,26,14,0.05);
+  }
+  .cal-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--earth);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .cal-input-row {
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .edd-card {
+    background: linear-gradient(135deg, var(--deep-green), #2A5240);
+    border-radius: 20px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    animation: fadeUp 0.4s ease;
+  }
+  .edd-inner { display: flex; align-items: center; gap: 18px; }
+  .edd-icon {
+    font-size: 2.8rem;
+    background: rgba(255,255,255,0.12);
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .edd-label { color: rgba(255,255,255,0.7); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .edd-date { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--saffron); font-weight: 700; }
+  .edd-countdown { color: rgba(255,255,255,0.8); font-size: 0.84rem; margin-top: 4px; }
+
+  /* Calendar Grid */
+  .cal-grid-header {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    margin-bottom: 6px;
+    padding: 0 4px;
+  }
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    padding: 0 4px;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    color: var(--earth);
+    cursor: default;
+    font-weight: 400;
+    position: relative;
+    transition: all 0.15s;
+  }
+  .cal-day.empty { background: none; }
+  .cal-day.other-month { color: var(--sand); }
+  .cal-day.today { background: var(--terracotta); color: white; font-weight: 700; }
+  .cal-day.edd-day { background: var(--sage); color: white; font-weight: 700; }
+  .cal-day.clinic-day { background: var(--saffron); color: var(--earth); font-weight: 700; }
+  .cal-day.clinic-day::after {
+    content: ''; position: absolute; bottom: 2px;
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--terracotta);
+  }
+  .cal-day.past { opacity: 0.4; }
+  .cal-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .cal-nav-btn {
+    background: var(--cream);
+    border: 1.5px solid var(--sand);
+    border-radius: 8px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--earth);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .cal-nav-btn:hover { background: var(--earth); color: white; border-color: var(--earth); }
+  .cal-month-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 600; color: var(--earth);
+  }
+  .cal-legend {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(222,201,154,0.4);
+  }
+  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--muted); }
+  .leg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ANC Schedule */
+  .anc-placeholder {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.87rem;
+    font-style: italic;
+    padding: 24px;
+    background: white;
+    border-radius: 14px;
+    border: 1.5px dashed var(--sand);
+  }
+  .anc-item {
+    background: white;
+    border: 1.5px solid rgba(222,201,154,0.5);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex; gap: 14px; align-items: center;
+    transition: all 0.2s;
+    animation: fadeUp 0.3s ease;
+  }
+  .anc-item:hover { box-shadow: 0 4px 14px rgba(44,26,14,0.08); }
+  .anc-item.done-visit { opacity: 0.5; }
+  .anc-item.done-visit .anc-title { text-decoration: line-through; }
+  .anc-item.next-visit { border-color: var(--saffron); background: rgba(232,160,32,0.04); }
+  .anc-num {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 2px solid var(--sand);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700; color: var(--earth);
+    flex-shrink: 0;
+  }
+  .anc-item.done-visit .anc-num { background: var(--sage); border-color: var(--sage); color: white; }
+  .anc-item.next-visit .anc-num { background: var(--saffron); border-color: var(--saffron); color: var(--earth); }
+  .anc-title { font-size: 0.9rem; font-weight: 500; color: var(--earth); }
+  .anc-date { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .anc-badge {
+    margin-left: auto; flex-shrink: 0;
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .anc-badge.done-b { background: rgba(107,143,94,0.15); color: var(--sage); }
+  .anc-badge.next-b { background: rgba(232,160,32,0.2); color: var(--ochre); }
+  .anc-badge.future-b { background: var(--cream); color: var(--muted); }
+
+  /* Notification button */
+  .btn-notif {
+    background: var(--earth);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-notif:hover { background: var(--terracotta); }</style>
+</head>
+<body>
+
+<!-- NOTIFICATION BANNER -->
+<div id="notifBanner" style="display:none; background:linear-gradient(90deg,var(--terracotta),#B8451A); color:white; padding:10px 18px; font-size:0.84rem; display:none; align-items:center; gap:10px; position:sticky; top:64px; z-index:99;">
+  <span style="font-size:1.1rem;">🔔</span>
+  <span id="notifText" style="flex:1;"></span>
+  <button onclick="dismissNotif()" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:4px 10px;border-radius:20px;cursor:pointer;font-size:0.8rem;">✕</button>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">🌿</div>
+    <div class="logo-text">Mama<span>Care</span></div>
+  </div>
+  <div class="header-right">
+    <button class="lang-toggle" id="langToggle" onclick="toggleLanguage()">
+      <span id="langFlag">🇰🇪</span> <span id="langLabel">SW</span>
+    </button>
+    <span class="sms-badge">📱 SMS Ready</span>
+    <span class="week-badge" id="weekBadge" data-en="Week 22" data-sw="Wiki 22">Wiki 22</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <div class="greeting">Karibu · Welcome · Akwaaba</div>
+    <h1>Hello, <span id="nameDisplay">Mama Amara</span> 🌸</h1>
+    <p class="hero-sub">Your compassionate pregnancy companion — culturally rooted, medically guided, always by your side.</p>
+    <div class="week-ring">
+      <div class="ring-visual">
+        <svg viewBox="0 0 60 60"><circle class="ring-bg" cx="30" cy="30" r="26"/><circle class="ring-fill" id="progressRing" cx="30" cy="30" r="26"/></svg>
+        <div class="ring-num" id="weekNum">22</div>
+      </div>
+      <div class="ring-info">
+        <strong id="trimesterLabel">2nd Trimester</strong>
+        <small id="weekInfo">18 weeks remaining · <span id="babySize">the size of a papaya 🥭</span></small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INTAKE FORM -->
+<div class="intake-overlay" id="intakeOverlay">
+  <div class="intake-modal">
+    <div class="intake-header">
+      <div class="intake-logo">🌿</div>
+      <div>
+        <div class="intake-title">Welcome to MamaCare</div>
+        <div class="intake-sub">Tell us about you to get your personalised report</div>
+      </div>
+    </div>
+
+    <div class="intake-steps">
+      <!-- Step 1 -->
+      <div class="intake-step active" id="step1">
+        <div class="step-label">Step 1 of 3 · About You</div>
+        <div class="intake-grid">
+          <div class="field-group">
+            <label>Your Name</label>
+            <input type="text" id="inputName" placeholder="e.g. Amara, Fatima, Ngozi…">
+          </div>
+          <div class="field-group">
+            <label>Age</label>
+            <input type="number" id="inputAge" min="14" max="55" placeholder="e.g. 26">
+          </div>
+          <div class="field-group">
+            <label>Country / Region</label>
+            <select id="inputCountry">
+              <option value="">Select…</option>
+              <option>Kenya</option><option>Nigeria</option><option>Ghana</option>
+              <option>Tanzania</option><option>Ethiopia</option><option>Uganda</option>
+              <option>Senegal</option><option>South Africa</option><option>Mozambique</option>
+              <option>Rwanda</option><option>Zimbabwe</option><option>Zambia</option>
+              <option>Malawi</option><option>Cameroon</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Nearest Town / City</label>
+            <input type="text" id="inputLocation" placeholder="e.g. Nairobi, Accra, Lagos…">
+          </div>
+        </div>
+        <button class="btn-next" onclick="goStep(2)">Next →</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="intake-step" id="step2">
+        <div class="step-label">Step 2 of 3 · Pregnancy &amp; Health</div>
+        <div class="intake-grid">
+          <div class="field-group">
+            <label>Pregnancy Week (1–42)</label>
+            <input type="number" id="inputWeek" min="1" max="42" placeholder="e.g. 22">
+          </div>
+          <div class="field-group">
+            <label>Number of Pregnancies</label>
+            <select id="inputParity">
+              <option value="">Select…</option>
+              <option value="1">1st pregnancy</option>
+              <option value="2">2nd pregnancy</option>
+              <option value="3">3rd pregnancy</option>
+              <option value="4+">4th or more</option>
+            </select>
+          </div>
+          <div class="field-group" style="grid-column: 1/-1;">
+            <label>Current Symptoms (describe in your own words)</label>
+            <textarea id="inputSymptoms" placeholder="e.g. nausea in the morning, swollen feet, mild headache, backache…" rows="3"></textarea>
+          </div>
+          <div class="field-group" style="grid-column: 1/-1;">
+            <label>Medical History (optional)</label>
+            <textarea id="inputHistory" placeholder="e.g. diabetes, high blood pressure, anaemia, previous miscarriage, HIV positive, sickle cell…" rows="3"></textarea>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:16px;">
+          <button class="btn-back" onclick="goStep(1)">← Back</button>
+          <button class="btn-next" onclick="goStep(3)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="intake-step" id="step3">
+        <div class="step-label">Step 3 of 3 · Lifestyle</div>
+        <div class="intake-grid">
+          <div class="field-group">
+            <label>Type of Work / Daily Activity</label>
+            <select id="inputWork">
+              <option value="">Select…</option>
+              <option>Mostly sitting (office, home)</option>
+              <option>Standing / walking (market, farming)</option>
+              <option>Heavy physical labour</option>
+              <option>Not currently working</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Access to Healthcare</label>
+            <select id="inputAccess">
+              <option value="">Select…</option>
+              <option>Good — clinic nearby</option>
+              <option>Moderate — travel needed</option>
+              <option>Limited — remote area</option>
+            </select>
+          </div>
+          <div class="field-group" style="grid-column: 1/-1;">
+            <label>Anything else you want MamaCare to know?</label>
+            <textarea id="inputExtra" placeholder="e.g. I live alone, my husband works away, I am worried about delivery costs…" rows="2"></textarea>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:16px;">
+          <button class="btn-back" onclick="goStep(2)">← Back</button>
+          <button class="btn-generate" onclick="generateReport()">
+            <span id="genBtnText">✨ Generate My Report</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SETUP (legacy — kept for logo-click quick edit) -->
+<div class="setup-section" id="setupSection">
+  <div class="setup-title">Update Profile 💛</div>
+  <div class="setup-grid">
+    <div class="field-group">
+      <label>Name</label>
+      <input type="text" id="editName" placeholder="Your name">
+    </div>
+    <div class="field-group">
+      <label>Pregnancy Week</label>
+      <input type="number" id="editWeek" min="1" max="42" placeholder="1–42">
+    </div>
+  </div>
+  <button class="btn-start" onclick="quickUpdateProfile()">Update ✓</button>
+</div>
+
+<!-- GENERATED REPORT -->
+<div class="report-section" id="reportSection" style="display:none;">
+  <div class="report-header">
+    <div class="report-header-top">
+      <div>
+        <div class="report-name" id="reportName">Mama Amara's Report</div>
+        <div class="report-meta" id="reportMeta">Week 22 · Kenya</div>
+      </div>
+      <button class="btn-edit-profile" onclick="reopenIntake()">✏️ Edit Profile</button>
+    </div>
+  </div>
+  <div class="report-loading" id="reportLoading">
+    <div class="loading-dots"><div class="ldot"></div><div class="ldot"></div><div class="ldot"></div></div>
+    <div class="loading-text">Generating your personalised report…</div>
+  </div>
+  <div class="report-body" id="reportBody" style="display:none;">
+    <!-- Sections injected by JS -->
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- PAGE: HOME -->
+  <div class="page active" id="page-home">
+    <!-- Trimester Progress -->
+    <div class="trimester-bar">
+      <div class="tri-label">
+        <span>Week 1</span>
+        <span id="trimesterName">2nd Trimester</span>
+        <span>Week 40</span>
+      </div>
+      <div class="tri-bar">
+        <div class="tri-fill" id="triFill"></div>
+      </div>
+      <div class="tri-weeks">
+        <span>1st Trimester (wk 1–13)</span>
+        <span>2nd (14–27)</span>
+        <span>3rd (28–40)</span>
+      </div>
+    </div>
+
+    <!-- Baby Development Card -->
+    <div class="baby-card">
+      <div class="card-label">🍼 Baby Development</div>
+      <div class="section-title" id="babyTitle">Your baby this week</div>
+      <div class="baby-size">
+        <div class="size-fruit" id="sizeEmoji">🥭</div>
+        <div class="size-info">
+          <strong id="sizeText">Size of a papaya</strong>
+          <small id="weightText">About 430g · 27cm long</small>
+        </div>
+      </div>
+      <ul class="development-list" id="developmentList">
+        <li>Baby can hear your voice — talk and sing to them!</li>
+        <li>Eyes are developing — baby responds to light</li>
+        <li>Lungs are practicing breathing movements</li>
+        <li>Sleep cycles are forming</li>
+        <li>Fingerprints are fully unique now</li>
+      </ul>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-accent" style="background: var(--sage);"></div>
+        <span class="card-icon">🥦</span>
+        <div class="card-label">Nutrition Today</div>
+        <div class="card-title">Iron-rich foods needed</div>
+        <div class="card-body">Eat dark leafy greens like sukuma wiki, groundnuts, and orange-fleshed sweet potato. Drink fresh juice to boost iron absorption.</div>
+      </div>
+      <div class="card">
+        <div class="card-accent" style="background: var(--saffron);"></div>
+        <span class="card-icon">🏥</span>
+        <div class="card-label">Next Appointment</div>
+        <div class="card-title">ANC Visit Due Soon</div>
+        <div class="card-body">Schedule your routine antenatal checkup. Carry your maternal health card. Ask about glucose screening this trimester.</div>
+      </div>
+      <div class="card">
+        <div class="card-accent" style="background: var(--dusty-rose);"></div>
+        <span class="card-icon">🌙</span>
+        <div class="card-label">Wellness Tip</div>
+        <div class="card-title">Rest on your left side</div>
+        <div class="card-body">Sleeping on your left side improves blood flow to baby and reduces swelling. Use a rolled cloth or pillow under your belly for comfort.</div>
+      </div>
+    </div>
+
+    <!-- Reminders -->
+    <div class="section-title">Antenatal Reminders</div>
+    <div class="section-sub">Tap ✓ to mark complete</div>
+    <ul class="reminder-list" id="reminderList">
+      <li class="reminder-item" id="rem1">
+        <div class="r-dot orange"></div>
+        <div>
+          <div class="r-title">Take iron + folic acid tablet</div>
+          <div class="r-date">Daily — take with orange juice</div>
+        </div>
+        <div class="r-check" onclick="toggleReminder('rem1')">✓</div>
+      </li>
+      <li class="reminder-item" id="rem2">
+        <div class="r-dot green"></div>
+        <div>
+          <div class="r-title">Drink at least 8 cups of water</div>
+          <div class="r-date">Daily — boil if unsure of safety</div>
+        </div>
+        <div class="r-check" onclick="toggleReminder('rem2')">✓</div>
+      </li>
+      <li class="reminder-item" id="rem3">
+        <div class="r-dot yellow"></div>
+        <div>
+          <div class="r-title">ANC glucose screening test</div>
+          <div class="r-date">Due this trimester (weeks 24–28)</div>
+        </div>
+        <div class="r-check" onclick="toggleReminder('rem3')">✓</div>
+      </li>
+      <li class="reminder-item" id="rem4">
+        <div class="r-dot green"></div>
+        <div>
+          <div class="r-title">Count baby kicks — feel 10 in 2 hrs</div>
+          <div class="r-date">Daily after week 28 — start noting now</div>
+        </div>
+        <div class="r-check" onclick="toggleReminder('rem4')">✓</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- PAGE: NUTRITION -->
+  <div class="page" id="page-nutrition">
+    <div class="section-title">Nutrition & Local Foods</div>
+    <div class="section-sub">Foods available in your community — no fancy imports needed</div>
+
+    <div class="nutrition-card">
+      <div class="card-label">🌿 Iron & Folate (Critical Now)</div>
+      <div class="food-tags" id="ironFoods">
+        <div class="food-tag">🥬 Sukuma Wiki</div>
+        <div class="food-tag">🥜 Groundnuts</div>
+        <div class="food-tag">🫘 Red Beans</div>
+        <div class="food-tag">🐟 Tilapia</div>
+        <div class="food-tag">🌾 Millet</div>
+        <div class="food-tag">🥚 Eggs</div>
+      </div>
+      <div class="nutrition-tip">💡 Squeeze lemon on leafy greens — vitamin C doubles iron absorption. Avoid tea/coffee right after meals as they block iron.</div>
+    </div>
+
+    <div class="nutrition-card">
+      <div class="card-label">🦴 Calcium & Bone Health</div>
+      <div class="food-tags">
+        <div class="food-tag">🥛 Fresh Milk</div>
+        <div class="food-tag">🫙 Mursik (Fermented)</div>
+        <div class="food-tag">🐟 Small Fish w/ Bones</div>
+        <div class="food-tag">🥦 Broccoli</div>
+        <div class="food-tag">🥜 Sesame Seeds</div>
+      </div>
+      <div class="nutrition-tip">💡 Mursik (fermented milk) and omena (dried fish with bones) are excellent calcium sources — eat 3 servings of dairy or equivalent daily.</div>
+    </div>
+
+    <div class="nutrition-card">
+      <div class="card-label">🧡 Vitamin A & Eye Health</div>
+      <div class="food-tags">
+        <div class="food-tag">🍠 Orange Sweet Potato</div>
+        <div class="food-tag">🥕 Carrots</div>
+        <div class="food-tag">🥭 Mango</div>
+        <div class="food-tag">🎃 Pumpkin</div>
+        <div class="food-tag">🍋 Papaya</div>
+      </div>
+      <div class="nutrition-tip">💡 Orange-fleshed sweet potato is your best friend — it's affordable, local, and packed with beta-carotene for both you and baby.</div>
+    </div>
+
+    <div class="nutrition-card">
+      <div class="card-label">⚠️ Foods to Limit or Avoid</div>
+      <div class="food-tags">
+        <div class="food-tag" style="border-color: var(--terracotta); color: var(--terracotta);">🚫 Raw Meat</div>
+        <div class="food-tag" style="border-color: var(--terracotta); color: var(--terracotta);">🚫 Unpasteurized Milk</div>
+        <div class="food-tag" style="border-color: var(--terracotta); color: var(--terracotta);">🚫 Excess Salt</div>
+        <div class="food-tag" style="border-color: var(--terracotta); color: var(--terracotta);">🚫 Alcohol</div>
+        <div class="food-tag" style="border-color: var(--terracotta); color: var(--terracotta);">⚠️ Too Much Tea</div>
+      </div>
+      <div class="nutrition-tip" style="border-color: var(--terracotta);">⚠️ If water safety is uncertain, always boil drinking water. Never take herbal medicines or traditional remedies without telling your midwife first.</div>
+    </div>
+  </div>
+
+  <!-- PAGE: SYMPTOMS -->
+  <div class="page" id="page-symptoms">
+    <div class="section-title">Symptom Checker</div>
+    <div class="section-sub">Select what you're experiencing — get guidance</div>
+    <div class="symptom-section">
+      <div class="symptom-chips" id="symptomChips">
+        <div class="chip" onclick="toggleSymptom(this, false)">😴 Fatigue</div>
+        <div class="chip" onclick="toggleSymptom(this, false)">🤢 Nausea</div>
+        <div class="chip" onclick="toggleSymptom(this, false)">🦵 Leg cramps</div>
+        <div class="chip" onclick="toggleSymptom(this, false)">💧 Swollen feet</div>
+        <div class="chip" onclick="toggleSymptom(this, false)">🔥 Heartburn</div>
+        <div class="chip" onclick="toggleSymptom(this, false)">😵 Headache</div>
+        <div class="chip" onclick="toggleSymptom(this, false)">💤 Back pain</div>
+        <div class="chip warning" onclick="toggleSymptom(this, true)">🩸 Bleeding</div>
+        <div class="chip warning" onclick="toggleSymptom(this, true)">👁️ Vision blurring</div>
+        <div class="chip warning" onclick="toggleSymptom(this, true)">⚡ Severe headache</div>
+        <div class="chip warning" onclick="toggleSymptom(this, true)">🫃 Baby not moving</div>
+        <div class="chip warning" onclick="toggleSymptom(this, true)">💦 Fluid leaking</div>
+      </div>
+
+      <div class="risk-banner" id="riskBanner">
+        <div class="risk-icon">⚠️</div>
+        <div class="risk-text">
+          <strong>Seek care immediately</strong>
+          <p id="riskText">You have selected a warning sign. Please go to your nearest clinic or hospital right away. Do not wait. Bring your maternal health card and tell the nurse or doctor your symptoms.</p>
+        </div>
+      </div>
+
+      <div id="symptomAdvice" style="margin-top:16px;"></div>
+    </div>
+  </div>
+
+  <!-- PAGE: WELLBEING -->
+  <div class="page" id="page-wellbeing">
+    <div class="section-title">Mental Wellbeing</div>
+    <div class="section-sub">Your feelings matter as much as your physical health</div>
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-body" style="font-style:italic; color: var(--muted);">"A mother's heart is the child's first classroom." — African Proverb</div>
+    </div>
+    <div class="card-label" style="text-transform:uppercase; letter-spacing:0.07em; font-size:0.78rem; color:var(--muted); margin-bottom:12px;">How are you feeling today?</div>
+    <div class="mood-row">
+      <button class="mood-btn" onclick="selectMood(this, 'joyful')"><span class="emoji">😊</span>Joyful</button>
+      <button class="mood-btn" onclick="selectMood(this, 'calm')"><span class="emoji">😌</span>Calm</button>
+      <button class="mood-btn" onclick="selectMood(this, 'tired')"><span class="emoji">😔</span>Tired</button>
+      <button class="mood-btn" onclick="selectMood(this, 'anxious')"><span class="emoji">😰</span>Anxious</button>
+      <button class="mood-btn" onclick="selectMood(this, 'sad')"><span class="emoji">😢</span>Sad</button>
+      <button class="mood-btn" onclick="selectMood(this, 'overwhelmed')"><span class="emoji">😫</span>Overwhelmed</button>
+    </div>
+    <div class="wellbeing-tip" id="wellbeingTip"></div>
+
+    <div style="margin-top:24px;">
+      <div class="section-title">Daily Practices</div>
+      <div class="card-grid" style="margin-top:14px;">
+        <div class="card">
+          <span class="card-icon">🌅</span>
+          <div class="card-title">Morning Breath</div>
+          <div class="card-body">Take 5 slow deep breaths each morning. Breathe in for 4 counts, hold for 2, out for 6. Reduces cortisol and helps baby too.</div>
+        </div>
+        <div class="card">
+          <span class="card-icon">🚶‍♀️</span>
+          <div class="card-title">Gentle Walking</div>
+          <div class="card-body">A 20-minute walk each day — even in your compound — reduces anxiety, improves sleep, and eases back pain.</div>
+        </div>
+        <div class="card">
+          <span class="card-icon">🗣️</span>
+          <div class="card-title">Talk to Someone</div>
+          <div class="card-body">Share your worries with your partner, mother, or a trusted friend. You are not meant to carry this journey alone.</div>
+        </div>
+        <div class="card">
+          <span class="card-icon">🎵</span>
+          <div class="card-title">Sing to Baby</div>
+          <div class="card-body">Your baby can hear from week 18. Singing familiar songs or playing gentle music builds early bonding and calms both of you.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- PAGE: CALENDAR -->
+  <div class="page" id="page-calendar">
+    <div class="section-title" data-en="Pregnancy Calendar" data-sw="Kalenda ya Ujauzito">Kalenda ya Ujauzito</div>
+    <div class="section-sub" data-en="Select today's date to calculate your due date and clinic visits" data-sw="Chagua tarehe ya leo kupata tarehe ya kujifungua na ziara za kliniki">Chagua tarehe ya leo kupata tarehe ya kujifungua na ziara za kliniki</div>
+
+    <div class="cal-card" style="margin-bottom:18px;">
+      <div class="cal-card-title" data-en="📅 Set Today's Date" data-sw="📅 Weka Tarehe ya Leo">📅 Weka Tarehe ya Leo</div>
+      <div class="cal-input-row">
+        <div class="field-group" style="flex:1;">
+          <label data-en="Today's Date" data-sw="Tarehe ya Leo">Tarehe ya Leo</label>
+          <input type="date" id="calToday" onchange="computeDates()">
+        </div>
+        <div class="field-group" style="flex:1;">
+          <label data-en="Current Pregnancy Week" data-sw="Wiki ya Ujauzito Sasa">Wiki ya Ujauzito Sasa</label>
+          <input type="number" id="calWeek" min="1" max="42" placeholder="e.g. 22" onchange="computeDates()">
+        </div>
+      </div>
+    </div>
+
+    <div class="edd-card" id="eddCard" style="display:none;">
+      <div class="edd-inner">
+        <div class="edd-icon">👶</div>
+        <div>
+          <div class="edd-label" data-en="Expected Delivery Date" data-sw="Tarehe ya Kujifungua">Tarehe ya Kujifungua</div>
+          <div class="edd-date" id="eddDate">—</div>
+          <div class="edd-countdown" id="eddCountdown"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cal-card" id="calVisual" style="display:none; margin-bottom:18px;">
+      <div class="cal-card-title" id="calMonthTitle"></div>
+      <div class="cal-grid-header">
+        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-legend">
+        <div class="leg-item"><div class="leg-dot" style="background:var(--terracotta);"></div><span data-en="Today" data-sw="Leo">Leo</span></div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--saffron);"></div><span data-en="Clinic Visit" data-sw="Ziara ya Kliniki">Ziara ya Kliniki</span></div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--sage);"></div><span data-en="Due Date" data-sw="Tarehe ya Kujifungua">Tarehe ya Kujifungua</span></div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-bottom:6px;" data-en="Clinic Visit Schedule" data-sw="Ratiba ya Ziara za Kliniki">Ratiba ya Ziara za Kliniki</div>
+    <div class="section-sub" data-en="WHO recommends at least 8 antenatal visits" data-sw="WHO inashauri angalau ziara 8 za kabla ya kuzaa">WHO inashauri angalau ziara 8 za kabla ya kuzaa</div>
+    <div id="ancSchedule" style="margin-bottom:28px;">
+      <div class="anc-placeholder" data-en="Enter your date and week above to see your clinic schedule" data-sw="Weka tarehe na wiki yako hapo juu kuona ratiba ya kliniki">Weka tarehe na wiki yako hapo juu kuona ratiba ya kliniki</div>
+    </div>
+
+    <div class="cal-card" style="margin-bottom:18px;">
+      <div class="cal-card-title" data-en="🔔 Clinic Reminders" data-sw="🔔 Vikumbusho vya Kliniki">🔔 Vikumbusho vya Kliniki</div>
+      <div style="font-size:0.86rem; color:var(--muted); margin-bottom:14px;" data-en="Enable browser notifications to get reminders of upcoming clinic visits" data-sw="Wezesha arifa za kivinjari kukumbushwa ziara za kliniki zinazokuja">Wezesha arifa za kivinjari kukumbushwa ziara za kliniki zinazokuja</div>
+      <button class="btn-notif" id="notifBtn" onclick="requestNotifications()">
+        🔔 <span data-en="Enable Reminders" data-sw="Wezesha Vikumbusho">Wezesha Vikumbusho</span>
+      </button>
+      <div id="notifStatus" style="margin-top:10px; font-size:0.82rem; color:var(--sage); display:none;"></div>
+    </div>
+  </div>
+
+  <!-- PAGE: COMPANION (Chat) -->
+  <div class="page" id="page-chat">
+    <div class="section-title">Ask MamaCare</div>
+    <div class="section-sub">Your personal pregnancy companion — hover messages to pin them</div>
+
+    <!-- Pinned Messages -->
+    <div class="pinned-section" id="pinnedSection">
+      <div class="card-label" style="margin-bottom:10px; font-size:0.75rem; letter-spacing:0.07em; text-transform:uppercase; color:var(--muted);">📌 Pinned Guidance</div>
+      <div class="pinned-list" id="pinnedList"></div>
+    </div>
+
+    <!-- Quick Topics -->
+    <div class="quick-topics">
+      <button class="topic-btn" onclick="quickTopic('What should I eat this week?')">🥗 This week's food</button>
+      <button class="topic-btn" onclick="quickTopic('What warning signs need urgent care?')">⚠️ Warning signs</button>
+      <button class="topic-btn" onclick="quickTopic('How do I prepare for labour?')">🏥 Labour prep</button>
+      <button class="topic-btn" onclick="quickTopic('My feet are swollen. Is this normal?')">🦶 Swollen feet</button>
+      <button class="topic-btn" onclick="quickTopic('What is the baby doing right now?')">👶 Baby now</button>
+      <button class="topic-btn" onclick="quickTopic('I feel very anxious about birth. Help.')">💛 I feel anxious</button>
+    </div>
+
+    <div class="chat-window">
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg ai">
+          <div class="msg-avatar">🌿</div>
+          <div>
+            <div class="msg-bubble">
+              Habari <strong id="chatName">Mama Amara</strong>! 🌸 I am MamaCare, your pregnancy companion. I am here to support you through every week of your journey — from baby's growth to food advice, symptoms to birth preparation.<br><br>
+              You are in <strong>Week 22</strong>, and your baby is doing wonderfully. What would you like to know today?
+              <button class="pin-btn" onclick="pinMessage(this)" title="Pin this message">📌</button>
+            </div>
+            <div class="sms-toggle" onclick="toggleSMS(this)">📱 SMS version</div>
+            <div class="sms-version">Wk22: Baby size of papaya. Eat iron-rich sukuma,beans,eggs daily. Take iron+folic tablet. Go to ANC soon. Any bleeding/blurred vision→go to clinic NOW.</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" placeholder="Ask about symptoms, nutrition, baby growth…" onkeydown="if(event.key==='Enter') sendMessage()">
+        <button class="send-btn" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="showPage('home', this)"><span class="nav-icon">🏠</span><span data-en="Home" data-sw="Nyumbani">Nyumbani</span></button>
+  <button class="nav-btn" onclick="showPage('nutrition', this)"><span class="nav-icon">🥗</span><span data-en="Nutrition" data-sw="Lishe">Lishe</span></button>
+  <button class="nav-btn" onclick="showPage('symptoms', this)"><span class="nav-icon">💊</span><span data-en="Symptoms" data-sw="Dalili">Dalili</span></button>
+  <button class="nav-btn" onclick="showPage('calendar', this)"><span class="nav-icon">📅</span><span data-en="Calendar" data-sw="Kalenda">Kalenda</span></button>
+  <button class="nav-btn" onclick="showPage('wellbeing', this)"><span class="nav-icon">💛</span><span data-en="Wellness" data-sw="Afya">Afya</span></button>
+  <button class="nav-btn" onclick="showPage('chat', this)"><span class="nav-icon">💬</span><span data-en="Chat" data-sw="Mazungumzo">Mazungumzo</span></button>
+</nav>
+
+<script>
+// ════════════════════════════════════════════════
+// ─── LANGUAGE FILES ─────────────────────────────
+// ════════════════════════════════════════════════
+const LANG = {
+  en: {
+    // ── Meta
+    langCode: "en",
+    langLabel: "EN",
+    langFlag: "🇬🇧",
+    htmlLang: "en",
+
+    // ── Header / Hero
+    smsBadge: "📱 SMS Ready",
+    weekBadge: w => `Week ${w}`,
+    greeting: "Karibu · Welcome · Akwaaba",
+    heroHello: name => `Hello, ${name} 🌸`,
+    heroSub: "Your compassionate pregnancy companion — culturally rooted, medically guided, always by your side.",
+    weeksRemaining: w => `${Math.max(0,40-w)} weeks remaining`,
+
+    // ── Intake Form
+    intakeTitle: "Welcome to MamaCare",
+    intakeSub: "Tell us about you to get your personalised report",
+    step1Label: "Step 1 of 3 · About You",
+    step2Label: "Step 2 of 3 · Pregnancy & Health",
+    step3Label: "Step 3 of 3 · Lifestyle",
+    fieldName: "Your Name",
+    fieldNamePh: "e.g. Amara, Fatima, Ngozi…",
+    fieldAge: "Age",
+    fieldAgePh: "e.g. 26",
+    fieldCountry: "Country / Region",
+    fieldCountryPh: "Select…",
+    fieldLocation: "Nearest Town / City",
+    fieldLocationPh: "e.g. Nairobi, Accra, Lagos…",
+    fieldWeek: "Pregnancy Week (1–42)",
+    fieldWeekPh: "e.g. 22",
+    fieldPregnancies: "Number of Pregnancies",
+    fieldSymptoms: "Current Symptoms",
+    fieldSymptomsPh: "e.g. nausea, swollen feet, backache…",
+    fieldHistory: "Medical History (optional)",
+    fieldHistoryPh: "e.g. diabetes, high blood pressure, anaemia…",
+    fieldWork: "Type of Work / Daily Activity",
+    fieldAccess: "Access to Healthcare",
+    fieldExtra: "Anything else MamaCare should know?",
+    fieldExtraPh: "e.g. I live alone, worried about delivery costs…",
+    parityOptions: ["Select…","1st pregnancy","2nd pregnancy","3rd pregnancy","4th or more"],
+    workOptions: ["Select…","Mostly sitting (office, home)","Standing / walking (market, farming)","Heavy physical labour","Not currently working"],
+    accessOptions: ["Select…","Good — clinic nearby","Moderate — travel needed","Limited — remote area"],
+    btnNext: "Next →",
+    btnBack: "← Back",
+    btnGenerate: "✨ Generate My Report",
+    btnGenerating: "⏳ Generating…",
+    btnUpdate: "Update ✓",
+    btnEditProfile: "✏️ Edit Profile",
+
+    // ── Validation alerts
+    alertName: "Please enter your name.",
+    alertCountry: "Please select your country.",
+    alertWeek: "Please enter a valid pregnancy week (1–42).",
+
+    // ── Nav
+    navHome: "Home",
+    navNutrition: "Nutrition",
+    navSymptoms: "Symptoms",
+    navCalendar: "Calendar",
+    navWellness: "Wellness",
+    navChat: "Chat",
+
+    // ── Home Page
+    trimester1: "1st Trimester",
+    trimester2: "2nd Trimester",
+    trimester3: "3rd Trimester",
+    week1Label: "Week 1",
+    week40Label: "Week 40",
+    tri1Label: "1st Trimester (wk 1–13)",
+    tri2Label: "2nd (14–27)",
+    tri3Label: "3rd (28–40)",
+    babyDevLabel: "🍼 Baby Development",
+    babyThisWeek: w => `Baby at Week ${w}`,
+    antenatalReminders: "Antenatal Reminders",
+    remindersSub: "Tap ✓ to mark complete",
+    reminders: [
+      { title: "Take iron + folic acid tablet", date: "Daily — take with orange juice", dot: "orange" },
+      { title: "Drink at least 8 cups of water", date: "Daily — boil if unsure of safety", dot: "green" },
+      { title: "ANC glucose screening test", date: "Due this trimester (weeks 24–28)", dot: "yellow" },
+      { title: "Count baby kicks — feel 10 in 2 hrs", date: "Daily after week 28", dot: "green" },
+    ],
+    cardNutritionLabel: "Nutrition Today",
+    cardNutritionTitle: "Iron-rich foods needed",
+    cardNutritionBody: "Eat dark leafy greens like sukuma wiki, groundnuts, and orange-fleshed sweet potato. Drink fresh juice to boost iron absorption.",
+    cardANCLabel: "Next Appointment",
+    cardANCTitle: "ANC Visit Due Soon",
+    cardANCBody: "Schedule your routine antenatal checkup. Carry your maternal health card. Ask about glucose screening this trimester.",
+    cardWellnessLabel: "Wellness Tip",
+    cardWellnessTitle: "Rest on your left side",
+    cardWellnessBody: "Sleeping on your left side improves blood flow to baby and reduces swelling. Use a rolled cloth or pillow under your belly for comfort.",
+
+    // ── Nutrition Page
+    nutritionTitle: "Nutrition & Local Foods",
+    nutritionSub: "Foods available in your community — no fancy imports needed",
+    ironLabel: "🌿 Iron & Folate (Critical Now)",
+    ironTip: "💡 Squeeze lemon on leafy greens — vitamin C doubles iron absorption. Avoid tea/coffee right after meals as they block iron.",
+    calciumLabel: "🦴 Calcium & Bone Health",
+    calciumTip: "💡 Mursik (fermented milk) and omena (dried fish with bones) are excellent calcium sources — eat 3 servings of dairy or equivalent daily.",
+    vitaLabel: "🧡 Vitamin A & Eye Health",
+    vitaTip: "💡 Orange-fleshed sweet potato is your best friend — it's affordable, local, and packed with beta-carotene for both you and baby.",
+    avoidLabel: "⚠️ Foods to Limit or Avoid",
+    avoidTip: "⚠️ If water safety is uncertain, always boil drinking water. Never take herbal medicines or traditional remedies without telling your midwife first.",
+
+    // ── Symptoms Page
+    symptomsTitle: "Symptom Checker",
+    symptomsSub: "Select what you're experiencing — get guidance",
+    warningTitle: "Seek care immediately",
+    warningText: "You have selected a warning sign. Please go to your nearest clinic or hospital right away. Do not wait. Bring your maternal health card and tell the nurse your symptoms.",
+    symptoms: ["😴 Fatigue","🤢 Nausea","🦵 Leg cramps","💧 Swollen feet","🔥 Heartburn","😵 Headache","💤 Back pain"],
+    warningSymptoms: ["🩸 Bleeding","👁️ Vision blurring","⚡ Severe headache","🫃 Baby not moving","💦 Fluid leaking"],
+    symptomAdvice: {
+      "😴 Fatigue": "Rest when you can — even short naps help. Eat iron-rich foods (sukuma wiki, groundnuts, beans) as anaemia causes fatigue. Stay hydrated.",
+      "🤢 Nausea": "Eat small frequent meals. Try dry crackers or plain ugali before getting up. Ginger tea can help. Avoid spicy or fatty foods on an empty stomach.",
+      "🦵 Leg cramps": "Stretch your calf before bed. Increase calcium and magnesium (milk, sesame, beans). Stay hydrated. Gentle calf massage helps.",
+      "💧 Swollen feet": "Elevate your feet when resting. Avoid standing too long. Reduce salt intake. Light walking improves circulation.",
+      "🔥 Heartburn": "Eat small meals. Don't lie down right after eating. Avoid spicy tomatoes and fried foods. Cold milk can soothe.",
+      "😵 Headache": "Rest in a dark quiet room. Apply a cool wet cloth. Drink water — dehydration often causes headaches. Avoid stress triggers.",
+      "💤 Back pain": "Sleep on your left side with a pillow under your belly. Gentle stretching. Warm (not hot) compress on lower back. Avoid lifting heavy items.",
+    },
+
+    // ── Calendar Page
+    calendarTitle: "Pregnancy Calendar",
+    calendarSub: "Select today's date to calculate your due date and clinic visits",
+    calSetDate: "📅 Set Today's Date",
+    calTodayLabel: "Today's Date",
+    calWeekLabel: "Current Pregnancy Week",
+    calWeekPh: "e.g. 22",
+    calEDDLabel: "Expected Delivery Date",
+    calWeeksLeft: w => `${w} weeks until baby arrives`,
+    calDaysLeft: d => `${d} days to go`,
+    calLegendToday: "Today",
+    calLegendClinic: "Clinic Visit",
+    calLegendEDD: "Due Date",
+    calScheduleTitle: "Clinic Visit Schedule",
+    calScheduleSub: "WHO recommends at least 8 antenatal visits",
+    calPlaceholder: "Enter your date and week above to see your clinic schedule",
+    calRemindersTitle: "🔔 Clinic Reminders",
+    calRemindersSub: "Enable browser notifications to get reminders of upcoming clinic visits",
+    calEnableBtn: "🔔 Enable Reminders",
+    calNotifGranted: "✅ Reminders enabled! You'll be notified before each clinic visit.",
+    calNotifDenied: "❌ Notifications blocked. Please allow them in your browser settings.",
+    calNotifNA: "ℹ️ Notifications are not supported on this browser.",
+    ancVisitNames: [
+      "1st Visit — Booking & Registration",
+      "2nd Visit — Blood Tests & Ultrasound",
+      "3rd Visit — Growth Check",
+      "4th Visit — Glucose Screening",
+      "5th Visit — Anatomy Check",
+      "6th Visit — Fetal Position Check",
+      "7th Visit — Pre-Birth Assessment",
+      "8th Visit — Final Review & Birth Plan",
+    ],
+    ancDone: "Done ✓",
+    ancNext: "Next Visit",
+    ancUpcoming: "Upcoming",
+    ancVisitWeeks: [8,12,16,20,24,28,32,36],
+
+    // ── Wellbeing Page
+    wellbeingTitle: "Mental Wellbeing",
+    wellbeingSub: "Your feelings matter as much as your physical health",
+    wellbeingProverb: "\"A mother's heart is the child's first classroom.\" — African Proverb",
+    moodQuestion: "How are you feeling today?",
+    moods: [
+      { key:"joyful", emoji:"😊", label:"Joyful" },
+      { key:"calm", emoji:"😌", label:"Calm" },
+      { key:"tired", emoji:"😔", label:"Tired" },
+      { key:"anxious", emoji:"😰", label:"Anxious" },
+      { key:"sad", emoji:"😢", label:"Sad" },
+      { key:"overwhelmed", emoji:"😫", label:"Overwhelmed" },
+    ],
+    wellbeingMessages: {
+      joyful: "That joy you feel? Baby feels it too. Oxytocin — the love hormone — crosses the placenta. Keep singing, laughing, and sharing gratitude today. 🌟",
+      calm: "Calm is a gift — to you and your baby. Cortisol levels stay low when you're peaceful. Enjoy this stillness. Take a gentle walk or sit in the shade and breathe. 🌿",
+      tired: "Growing a human being is hard work. Your body is doing extraordinary things. Rest without guilt — sleep and rest are not laziness, they are medicine. Eat iron-rich foods and drink plenty of water. 💤",
+      anxious: "It is completely normal to feel anxious about pregnancy and birth. You are not alone — many mothers feel this. Talk to your partner, mother, or midwife. Deep breathing and prayer or meditation can help calm your nervous system. 🤝",
+      sad: "Sadness during pregnancy — sometimes called antenatal depression — is real and common. Be gentle with yourself. Share your feelings with someone you trust. If you feel persistently sad, please speak to your midwife or doctor. 💛",
+      overwhelmed: "Take one breath at a time. You do not have to figure everything out today. Focus only on what you can do right now. Ask for help — from family, community, health workers. You were not meant to carry this alone. 🌸",
+    },
+    dailyPracticesTitle: "Daily Practices",
+    dailyPractices: [
+      { icon:"🌅", title:"Morning Breath", body:"Take 5 slow deep breaths each morning. Breathe in for 4 counts, hold for 2, out for 6. Reduces cortisol and helps baby too." },
+      { icon:"🚶‍♀️", title:"Gentle Walking", body:"A 20-minute walk each day — even in your compound — reduces anxiety, improves sleep, and eases back pain." },
+      { icon:"🗣️", title:"Talk to Someone", body:"Share your worries with your partner, mother, or a trusted friend. You are not meant to carry this journey alone." },
+      { icon:"🎵", title:"Sing to Baby", body:"Your baby can hear from week 18. Singing familiar songs or playing gentle music builds early bonding and calms both of you." },
+    ],
+
+    // ── Chat Page
+    chatTitle: "Ask MamaCare",
+    chatSub: "Your personal pregnancy companion — hover messages to pin them",
+    pinnedLabel: "📌 Pinned Guidance",
+    quickTopics: [
+      { label:"🥗 This week's food", q:"What should I eat this week?" },
+      { label:"⚠️ Warning signs", q:"What warning signs need urgent care?" },
+      { label:"🏥 Labour prep", q:"How do I prepare for labour?" },
+      { label:"🦶 Swollen feet", q:"My feet are swollen. Is this normal?" },
+      { label:"👶 Baby now", q:"What is the baby doing right now?" },
+      { label:"💛 I feel anxious", q:"I feel very anxious about birth. Help." },
+    ],
+    chatWelcome: (name, week) => `Habari <strong>${name}</strong>! 🌸 I am MamaCare, your pregnancy companion. I am here to support you through every week of your journey — from baby's growth to food advice, symptoms to birth preparation.<br><br>You are in <strong>Week ${week}</strong>, and your baby is doing wonderfully. What would you like to know today?`,
+    chatPlaceholder: "Ask about symptoms, nutrition, baby growth…",
+    smsVersion: "📱 SMS version",
+    hideSmsVersion: "📱 Hide SMS version",
+    chatFallback: name => `I'm here with you, ${name}. For the most accurate guidance, please visit your nearest clinic or speak to your midwife.`,
+
+    // ── Report blocks
+    reportTitle: name => `${name}'s Pregnancy Report`,
+    reportMeta: (week, loc) => `Week ${week} · ${loc}`,
+    copySMS: "📋 Copy SMS",
+    copied: "✅ Copied!",
+
+    // ── Week data (fruit sizes in English)
+    weekSizes: {
+      4:"Blueberry", 8:"Kidney bean", 12:"Lime", 16:"Avocado",
+      20:"Mango", 24:"Corn cob", 28:"Eggplant", 32:"Small pumpkin",
+      36:"Honeydew", 40:"Watermelon"
+    },
+    trimesterOf: t => t === "1st" ? "1st Trimester" : t === "2nd" ? "2nd Trimester" : "3rd Trimester",
+  },
+
+  sw: {
+    langCode: "sw",
+    langLabel: "SW",
+    langFlag: "🇰🇪",
+    htmlLang: "sw",
+
+    smsBadge: "📱 SMS Tayari",
+    weekBadge: w => `Wiki ${w}`,
+    greeting: "Karibu · Habari · Akwaaba",
+    heroHello: name => `Habari, ${name} 🌸`,
+    heroSub: "Mshauri wako wa ujauzito — umezingatia utamaduni, unaongozwa na dawa, daima upande wako.",
+    weeksRemaining: w => `Wiki ${Math.max(0,40-w)} zimesalia`,
+
+    intakeTitle: "Karibu MamaCare",
+    intakeSub: "Tuambie kuhusu wewe ili kupata ripoti yako ya kibinafsi",
+    step1Label: "Hatua 1 ya 3 · Kuhusu Wewe",
+    step2Label: "Hatua 2 ya 3 · Ujauzito & Afya",
+    step3Label: "Hatua 3 ya 3 · Maisha ya Kila Siku",
+    fieldName: "Jina Lako",
+    fieldNamePh: "mfano: Amara, Fatima, Ngozi…",
+    fieldAge: "Umri",
+    fieldAgePh: "mfano: 26",
+    fieldCountry: "Nchi / Mkoa",
+    fieldCountryPh: "Chagua…",
+    fieldLocation: "Mji au Kijiji Karibu Nawe",
+    fieldLocationPh: "mfano: Nairobi, Mombasa, Lagos…",
+    fieldWeek: "Wiki ya Ujauzito (1–42)",
+    fieldWeekPh: "mfano: 22",
+    fieldPregnancies: "Idadi ya Mimba",
+    fieldSymptoms: "Dalili za Sasa",
+    fieldSymptomsPh: "mfano: kichefuchefu, miguu kuvimba, maumivu ya mgongo…",
+    fieldHistory: "Historia ya Afya (si lazima)",
+    fieldHistoryPh: "mfano: kisukari, shinikizo la damu, upungufu wa damu…",
+    fieldWork: "Aina ya Kazi / Shughuli za Kila Siku",
+    fieldAccess: "Upatikanaji wa Huduma za Afya",
+    fieldExtra: "Kuna kingine MamaCare ajue?",
+    fieldExtraPh: "mfano: Ninaishi peke yangu, wasiwasi kuhusu gharama za kujifungua…",
+    parityOptions: ["Chagua…","Mimba ya 1","Mimba ya 2","Mimba ya 3","Mimba ya 4 au zaidi"],
+    workOptions: ["Chagua…","Kukaa zaidi (ofisi, nyumbani)","Kusimama/kutembea (soko, shamba)","Kazi nzito ya mwili","Sifanyi kazi kwa sasa"],
+    accessOptions: ["Chagua…","Vizuri — kliniki ipo karibu","Wastani — safari inahitajika","Mdogo — eneo la mbali"],
+    btnNext: "Endelea →",
+    btnBack: "← Rudi",
+    btnGenerate: "✨ Tengeneza Ripoti Yangu",
+    btnGenerating: "⏳ Inatengeneza…",
+    btnUpdate: "Sasisha ✓",
+    btnEditProfile: "✏️ Hariri Wasifu",
+
+    alertName: "Tafadhali ingiza jina lako.",
+    alertCountry: "Tafadhali chagua nchi yako.",
+    alertWeek: "Tafadhali ingiza wiki sahihi ya ujauzito (1–42).",
+
+    navHome: "Nyumbani",
+    navNutrition: "Lishe",
+    navSymptoms: "Dalili",
+    navCalendar: "Kalenda",
+    navWellness: "Afya",
+    navChat: "Mazungumzo",
+
+    trimester1: "Trimesta ya 1",
+    trimester2: "Trimesta ya 2",
+    trimester3: "Trimesta ya 3",
+    week1Label: "Wiki 1",
+    week40Label: "Wiki 40",
+    tri1Label: "Trimesta 1 (wiki 1–13)",
+    tri2Label: "2 (14–27)",
+    tri3Label: "3 (28–40)",
+    babyDevLabel: "🍼 Ukuaji wa Mtoto",
+    babyThisWeek: w => `Mtoto Wiki ${w}`,
+    antenatalReminders: "Vikumbusho vya ANC",
+    remindersSub: "Gonga ✓ kuthibitisha umefanya",
+    reminders: [
+      { title: "Kunywa dawa ya chuma + asidi ya foliki", date: "Kila siku — kunywa na juisi ya machungwa", dot: "orange" },
+      { title: "Kunywa vikombe 8 vya maji angalau", date: "Kila siku — chemsha kama una shaka", dot: "green" },
+      { title: "Kipimo cha sukari cha ANC", date: "Wiki hii ya trimesta (wiki 24–28)", dot: "yellow" },
+      { title: "Hesabu mateke ya mtoto — pata 10 kwa saa 2", date: "Kila siku baada ya wiki 28", dot: "green" },
+    ],
+    cardNutritionLabel: "Lishe Leo",
+    cardNutritionTitle: "Vyakula vyenye chuma vinahitajika",
+    cardNutritionBody: "Kula mboga za majani kama sukuma wiki, karanga, na viazi vitamu vya rangi ya chungwa. Kunywa juisi kupandisha ufyatiri wa chuma.",
+    cardANCLabel: "Miadi Inayofuata",
+    cardANCTitle: "Ziara ya ANC Inakaribia",
+    cardANCBody: "Panga uchunguzi wako wa kawaida wa ujauzito. Beba kadi yako ya afya ya mama. Uliza kuhusu kipimo cha sukari trimesta hii.",
+    cardWellnessLabel: "Kidokezo cha Afya",
+    cardWellnessTitle: "Lala upande wa kushoto",
+    cardWellnessBody: "Kulala upande wa kushoto kunaboresha mtiririko wa damu kwa mtoto na kupunguza uvimbe. Tumia nguo iliyokunjwa au mto chini ya tumbo lako.",
+
+    nutritionTitle: "Lishe na Chakula cha Mitaa",
+    nutritionSub: "Vyakula vinavyopatikana katika jamii yako — hakuna haja ya vitu vya bei ghali",
+    ironLabel: "🌿 Chuma & Asidi ya Foliki (Muhimu Sana)",
+    ironTip: "💡 Squeeze limao kwenye mboga za majani — vitamini C inaongeza ufyatiri wa chuma mara mbili. Epuka chai/kahawa baada ya mlo kwani zinazuia chuma.",
+    calciumLabel: "🦴 Kalsiamu & Afya ya Mifupa",
+    calciumTip: "💡 Mursik (maziwa ya kuchachisha) na omena (samaki wadogo wenye mifupa) ni chanzo kizuri cha kalsiamu — kula sehemu 3 za maziwa au sawa kila siku.",
+    vitaLabel: "🧡 Vitamini A & Afya ya Macho",
+    vitaTip: "💡 Kiazi kitamu cha rangi ya chungwa ni rafiki yako wa karibu — ni wa bei nafuu, wa mitaa, na una beta-carotene kwa ajili yako na mtoto wako.",
+    avoidLabel: "⚠️ Vyakula vya Kupunguza au Kuepuka",
+    avoidTip: "⚠️ Ikiwa maji si salama, chemsha maji ya kunywa kila wakati. Usichukue dawa za asili au tiba za kimapokeo bila kumwambia mkunga wako kwanza.",
+
+    symptomsTitle: "Kipimo cha Dalili",
+    symptomsSub: "Chagua unachopitia — pata mwongozo",
+    warningTitle: "Tafuta matibabu haraka",
+    warningText: "Umechagua dalili ya hatari. Tafadhali nenda kwenye kliniki au hospitali yako ya karibu mara moja. Usichelewe. Beba kadi yako ya afya ya mama.",
+    symptoms: ["😴 Uchovu","🤢 Kichefuchefu","🦵 Maumivu ya miguu","💧 Miguu kuvimba","🔥 Kiungulia","😵 Maumivu ya kichwa","💤 Maumivu ya mgongo"],
+    warningSymptoms: ["🩸 Kutoka damu","👁️ Uoni hafifu","⚡ Maumivu makali ya kichwa","🫃 Mtoto hasogei","💦 Majimaji kutoka"],
+    symptomAdvice: {
+      "😴 Uchovu": "Pumzika unapoweza — hata usingizi mfupi husaidia. Kula vyakula vyenye chuma (sukuma wiki, karanga, maharagwe) kwani upungufu wa damu husababisha uchovu. Kunywa maji ya kutosha.",
+      "🤢 Kichefuchefu": "Kula mara kwa mara kidogo kidogo. Jaribu biskuti kavu au ugali kabla ya kuamka. Chai ya tangawizi inaweza kusaidia. Epuka vyakula vya mafuta au vya viungo ukiwa na njaa.",
+      "🦵 Maumivu ya miguu": "Nyoosha misuli ya ndama kabla ya kulala. Ongeza kalsiamu na magnesiamu (maziwa, ufuta, maharagwe). Kunywa maji. Massage ya upole ya ndama husaidia.",
+      "💧 Miguu kuvimba": "Inua miguu yako unapopumzika. Epuka kusimama muda mrefu. Punguza chumvi katika chakula. Kutembea kidogo kunaboresha mzunguko wa damu.",
+      "🔥 Kiungulia": "Kula milo midogo. Usilalike mara baada ya kula. Epuka nyanya za viungo na vyakula vya kukaanga. Maziwa baridi yanaweza kutuliza.",
+      "😵 Maumivu ya kichwa": "Pumzika kwenye chumba chenye giza na utulivu. Weka kitambaa baridi chenye unyevu. Kunywa maji — ukosefu wa maji mara nyingi husababisha maumivu ya kichwa.",
+      "💤 Maumivu ya mgongo": "Lala upande wa kushoto na mto chini ya tumbo lako. Mazoezi ya upole ya kunyoosha. Kitambaa cha joto (si moto) kwenye mgongo wa chini. Epuka kubeba vitu vizito.",
+    },
+
+    calendarTitle: "Kalenda ya Ujauzito",
+    calendarSub: "Chagua tarehe ya leo kupata tarehe ya kujifungua na ziara za kliniki",
+    calSetDate: "📅 Weka Tarehe ya Leo",
+    calTodayLabel: "Tarehe ya Leo",
+    calWeekLabel: "Wiki ya Ujauzito Sasa",
+    calWeekPh: "mfano: 22",
+    calEDDLabel: "Tarehe ya Kujifungua (EDD)",
+    calWeeksLeft: w => `Wiki ${w} zimesalia hadi mtoto afike`,
+    calDaysLeft: d => `Siku ${d} zimesalia`,
+    calLegendToday: "Leo",
+    calLegendClinic: "Ziara ya Kliniki",
+    calLegendEDD: "Tarehe ya Kujifungua",
+    calScheduleTitle: "Ratiba ya Ziara za Kliniki",
+    calScheduleSub: "WHO inashauri angalau ziara 8 za kabla ya kuzaa",
+    calPlaceholder: "Weka tarehe na wiki yako hapo juu kuona ratiba ya kliniki",
+    calRemindersTitle: "🔔 Vikumbusho vya Kliniki",
+    calRemindersSub: "Wezesha arifa za kivinjari kukumbushwa ziara za kliniki zinazokuja",
+    calEnableBtn: "🔔 Wezesha Vikumbusho",
+    calNotifGranted: "✅ Vikumbusho vimewezeshwa! Utaarifiwa kabla ya kila ziara ya kliniki.",
+    calNotifDenied: "❌ Arifa zimezuiwa. Tafadhali ziruhusu katika mipangilio ya kivinjari chako.",
+    calNotifNA: "ℹ️ Arifa hazisaidiwi kwenye kivinjari hiki.",
+    ancVisitNames: [
+      "Ziara ya 1 — Usajili na Tathmini",
+      "Ziara ya 2 — Vipimo vya Damu & Ultrasound",
+      "Ziara ya 3 — Ukaguzi wa Ukuaji",
+      "Ziara ya 4 — Kipimo cha Sukari",
+      "Ziara ya 5 — Ukaguzi wa Muundo wa Mwili",
+      "Ziara ya 6 — Nafasi ya Mtoto",
+      "Ziara ya 7 — Tathmini ya Kabla ya Kuzaa",
+      "Ziara ya 8 — Mapitio ya Mwisho & Mpango wa Kuzaa",
+    ],
+    ancDone: "Imefanyika ✓",
+    ancNext: "Ziara Inayofuata",
+    ancUpcoming: "Ijayo",
+    ancVisitWeeks: [8,12,16,20,24,28,32,36],
+
+    wellbeingTitle: "Afya ya Akili",
+    wellbeingSub: "Hisia zako ni muhimu kama afya yako ya kimwili",
+    wellbeingProverb: "\"Moyo wa mama ndio darasa la kwanza la mtoto.\" — Methali ya Afrika",
+    moodQuestion: "Unajisikiaje leo?",
+    moods: [
+      { key:"joyful", emoji:"😊", label:"Furaha" },
+      { key:"calm", emoji:"😌", label:"Utulivu" },
+      { key:"tired", emoji:"😔", label:"Uchovu" },
+      { key:"anxious", emoji:"😰", label:"Wasiwasi" },
+      { key:"sad", emoji:"😢", label:"Huzuni" },
+      { key:"overwhelmed", emoji:"😫", label:"Mzigo Mzito" },
+    ],
+    wellbeingMessages: {
+      joyful: "Furaha unayoihisi? Mtoto wako anaihisi pia. Oxytocin — homoni ya upendo — inapita kwenye kondo la nyuma. Endelea kuimba, kucheka, na kushukuru leo. 🌟",
+      calm: "Utulivu ni zawadi — kwako na mtoto wako. Viwango vya cortisol vinabaki chini unapokuwa na amani. Furahia ukimya huu. Tembea kidogo au kaa chini ya mti upumue. 🌿",
+      tired: "Kukuza binadamu ni kazi ngumu. Mwili wako unafanya mambo ya ajabu. Pumzika bila aibu — usingizi na mapumziko si uvivu, ni dawa. Kula vyakula vyenye chuma na kunywa maji mengi. 💤",
+      anxious: "Ni kawaida kabisa kuhisi wasiwasi kuhusu ujauzito na kuzaa. Hujui peke yako — mama wengi wanahisi hivi. Zungumza na mwenzako, mama, au mkunga. Kupumua kwa kina kunaweza kutuliza mfumo wako wa neva. 🤝",
+      sad: "Huzuni wakati wa ujauzito — wakati mwingine huitwa unyogovu wa kabla ya kuzaa — ni halisi na ya kawaida. Kuwa mpole nawe mwenyewe. Shiriki hisia zako na mtu unayemwamini. 💛",
+      overwhelmed: "Pumua mara moja kwa wakati mmoja. Huhitaji kuelewa kila kitu leo. Zingatia tu unachoweza kufanya sasa hivi. Omba msaada — kutoka kwa familia, jamii, wafanyakazi wa afya. Hukusudiwa kubeba hili peke yako. 🌸",
+    },
+    dailyPracticesTitle: "Mazoea ya Kila Siku",
+    dailyPractices: [
+      { icon:"🌅", title:"Kupumua Asubuhi", body:"Pumua polepole mara 5 kila asubuhi. Pumua ndani kwa hesabu 4, shikilia kwa 2, toa kwa 6. Inapunguza cortisol na inasaidia mtoto pia." },
+      { icon:"🚶‍♀️", title:"Kutembea Kidogo", body:"Kutembea dakika 20 kila siku — hata nyumbani — kunapunguza wasiwasi, kuboresha usingizi, na kupunguza maumivu ya mgongo." },
+      { icon:"🗣️", title:"Zungumza na Mtu", body:"Shiriki wasiwasi wako na mwenzako, mama, au rafiki wa kuamini. Hukusudiwa kubeba safari hii peke yako." },
+      { icon:"🎵", title:"Mwimbie Mtoto", body:"Mtoto wako anaweza kusikia kuanzia wiki ya 18. Kuimba nyimbo za kawaida au kucheza muziki wa upole kunaimarisha uhusiano na kumtuliza nyote wawili." },
+    ],
+
+    chatTitle: "Uliza MamaCare",
+    chatSub: "Mshauri wako wa ujauzito — pitia ujumbe ili kuweka pini",
+    pinnedLabel: "📌 Mwongozo Uliowekwa Pini",
+    quickTopics: [
+      { label:"🥗 Chakula wiki hii", q:"Ninapaswa kula nini wiki hii?" },
+      { label:"⚠️ Ishara za hatari", q:"Ni ishara zipi za hatari zinahitaji matibabu ya haraka?" },
+      { label:"🏥 Maandalizi ya kuzaa", q:"Ninajitayarishaje kwa kuzaa?" },
+      { label:"🦶 Miguu kuvimba", q:"Miguu yangu imevimba. Je, hii ni kawaida?" },
+      { label:"👶 Mtoto sasa", q:"Mtoto wangu anafanya nini sasa hivi?" },
+      { label:"💛 Nahisi wasiwasi", q:"Nahisi wasiwasi sana kuhusu kuzaa. Nisaidie." },
+    ],
+    chatWelcome: (name, week) => `Habari <strong>${name}</strong>! 🌸 Mimi ni MamaCare, mshauri wako wa ujauzito. Niko hapa kukusaidia katika kila wiki ya safari yako — kutoka ukuaji wa mtoto hadi ushauri wa chakula, dalili hadi maandalizi ya kuzaa.<br><br>Uko katika <strong>Wiki ${week}</strong>, na mtoto wako anakua vizuri. Ungependa kujua nini leo?`,
+    chatPlaceholder: "Uliza kuhusu dalili, lishe, ukuaji wa mtoto…",
+    smsVersion: "📱 Toleo la SMS",
+    hideSmsVersion: "📱 Ficha toleo la SMS",
+    chatFallback: name => `Niko nawe, ${name}. Kwa mwongozo sahihi zaidi, tafadhali tembelea kliniki yako ya karibu au zungumza na mkunga wako.`,
+
+    reportTitle: name => `Ripoti ya ${name}`,
+    reportMeta: (week, loc) => `Wiki ${week} · ${loc}`,
+    copySMS: "📋 Nakili SMS",
+    copied: "✅ Imenakiliwa!",
+
+    weekSizes: {
+      4:"Beri ndogo", 8:"Maharage ya figo", 12:"Ndimu",
+      16:"Parachichi", 20:"Embe", 24:"Gunzi la mahindi",
+      28:"Biringanya", 32:"Boga dogo", 36:"Tikiti ndogo", 40:"Tikiti kubwa"
+    },
+    trimesterOf: t => t === "1st" ? "Trimesta ya 1" : t === "2nd" ? "Trimesta ya 2" : "Trimesta ya 3",
+  }
+};
+
+// Active language (default: Swahili as shown in header)
+let activeLang = "sw";
+function t() { return LANG[activeLang]; }
+
+// ════════════════════════════════════════════════
+// ─── LANGUAGE SWITCHER ──────────────────────────
+// ════════════════════════════════════════════════
+function toggleLanguage() {
+  activeLang = activeLang === "en" ? "sw" : "en";
+  applyLanguage();
+}
+
+function applyLanguage() {
+  const L = t();
+  document.documentElement.lang = L.htmlLang;
+
+  // Header
+  document.getElementById('langFlag').textContent = L.langFlag;
+  document.getElementById('langLabel').textContent = L.langLabel;
+  document.getElementById('smsBadge').textContent = L.smsBadge;
+  document.getElementById('weekBadge').textContent = L.weekBadge(profile.week);
+
+  // Hero
+  document.querySelector('.greeting').textContent = L.greeting;
+  document.getElementById('heroHello').innerHTML = L.heroHello(profile.name);
+  document.querySelector('.hero-sub').textContent = L.heroSub;
+  document.getElementById('trimesterLabel').textContent = L.trimesterOf(currentTrimester());
+  document.getElementById('weekInfo').innerHTML = L.weeksRemaining(profile.week) + ' · <span>' + L.weekSizes[closestWeekKey(profile.week)] + ' ' + weekData[closestWeekKey(profile.week)].fruit + '</span>';
+
+  // Intake form
+  document.querySelector('.intake-title').textContent = L.intakeTitle;
+  document.querySelector('.intake-sub').textContent = L.intakeSub;
+  setStepLabels(L);
+  setFieldLabels(L);
+  setSelectOptions(L);
+  document.querySelector('.btn-next').textContent = L.btnNext;
+  document.querySelectorAll('.btn-back').forEach(b => b.textContent = L.btnBack);
+  document.getElementById('genBtnText').textContent = L.btnGenerate;
+  document.querySelector('.btn-start')?.setAttribute('onclick','quickUpdateProfile()');
+
+  // Bottom nav
+  const navLabels = [L.navHome, L.navNutrition, L.navSymptoms, L.navCalendar, L.navWellness, L.navChat];
+  document.querySelectorAll('.nav-btn span:last-child').forEach((el, i) => {
+    if (navLabels[i]) el.textContent = navLabels[i];
+  });
+
+  // Home page
+  renderHomePage();
+
+  // Nutrition
+  renderNutritionPage();
+
+  // Symptoms
+  renderSymptomsPage();
+
+  // Calendar
+  renderCalendarPage();
+
+  // Wellbeing
+  renderWellbeingPage();
+
+  // Chat
+  renderChatPage();
+}
+
+function currentTrimester() {
+  const w = profile.week;
+  return w <= 13 ? "1st" : w <= 27 ? "2nd" : "3rd";
+}
+function closestWeekKey(week) {
+  const keys = Object.keys(weekData).map(Number).sort((a,b)=>a-b);
+  return keys.reduce((prev, cur) => Math.abs(cur-week) < Math.abs(prev-week) ? cur : prev);
+}
+
+// ════════════════════════════════════════════════
+// ─── WEEK DATA ──────────────────────────────────
+// ════════════════════════════════════════════════
+const weekData = {
+  4:  { fruit: "🫐", size: "Blueberry", weight: "~0.4g · 1mm", trimester: "1st", devs: ["Implantation complete","Neural tube forming","Heartbeat starting","Tiny limb buds appearing"] },
+  8:  { fruit: "🫑", size: "Kidney bean", weight: "~1g · 1.6cm", trimester: "1st", devs: ["Heartbeat detectable","All major organs forming","Eyes, nose, mouth visible","Fingers beginning to form"] },
+  12: { fruit: "🍋", size: "Lime", weight: "~14g · 5.4cm", trimester: "1st", devs: ["Reflexes developing","Nails and hair growing","Baby can swallow","Sex organs forming"] },
+  16: { fruit: "🥑", size: "Avocado", weight: "~100g · 11.6cm", trimester: "2nd", devs: ["Baby can hear sounds","Facial expressions forming","Sucking motions present","Skeleton hardening from cartilage"] },
+  20: { fruit: "🥭", size: "Mango", weight: "~300g · 25cm", trimester: "2nd", devs: ["Full anatomy scan time","Baby swallowing amniotic fluid","Eyelids still fused","Fine hair (lanugo) covering body"] },
+  24: { fruit: "🌽", size: "Corn cob", weight: "~600g · 30cm", trimester: "2nd", devs: ["Lungs developing rapidly","Baby responds to sound","Sleep-wake cycles forming","Skin becoming less transparent"] },
+  28: { fruit: "🍆", size: "Eggplant", weight: "~1kg · 37cm", trimester: "3rd", devs: ["Eyes opening and closing","Brain developing rapidly","Baby can dream (REM sleep)","Gaining fat for warmth"] },
+  32: { fruit: "🎃", size: "Small pumpkin", weight: "~1.8kg · 42cm", trimester: "3rd", devs: ["Most organs nearly mature","Baby practicing breathing","Hiccups common — normal!","Repositioning for birth"] },
+  36: { fruit: "🍈", size: "Honeydew", weight: "~2.6kg · 47cm", trimester: "3rd", devs: ["Nearly full term","Lungs almost ready","Fat stores building","Head may move into pelvis"] },
+  40: { fruit: "🎃", size: "Watermelon", weight: "~3.4kg · 51cm", trimester: "3rd", devs: ["Full term! Ready to meet you","Immune system strengthening","Baby in birthing position","All systems go!"] },
+};
+
+const symptomAdvice = {
+  "😴 Fatigue": "Rest when you can — even short naps help. Eat iron-rich foods (sukuma wiki, groundnuts, beans) as anaemia causes fatigue. Stay hydrated.",
+  "🤢 Nausea": "Eat small frequent meals. Try dry crackers or plain ugali before getting up. Ginger tea can help. Avoid spicy or fatty foods on an empty stomach.",
+  "🦵 Leg cramps": "Stretch your calf before bed. Increase calcium and magnesium (milk, sesame, beans). Stay hydrated. Gentle calf massage helps.",
+  "💧 Swollen feet": "Elevate your feet when resting. Avoid standing too long. Reduce salt intake. Light walking improves circulation.",
+  "🔥 Heartburn": "Eat small meals. Don't lie down right after eating. Avoid spicy tomatoes and fried foods. Cold milk can soothe.",
+  "😵 Headache": "Rest in a dark quiet room. Apply a cool wet cloth. Drink water — dehydration often causes headaches. Avoid stress triggers.",
+  "💤 Back pain": "Sleep on your left side with a pillow under your belly. Gentle stretching. Warm (not hot) compress on lower back. Avoid lifting heavy items.",
+};
+
+const wellbeingMessages = {
+  joyful: "That joy you feel? Baby feels it too. Oxytocin — the love hormone — crosses the placenta. Keep singing, laughing, and sharing gratitude today. 🌟",
+  calm: "Calm is a gift — to you and your baby. Cortisol levels stay low when you're peaceful. Enjoy this stillness. Take a gentle walk or sit in the shade and breathe. 🌿",
+  tired: "Growing a human being is hard work. Your body is doing extraordinary things. Rest without guilt — sleep and rest are not laziness, they are medicine. Eat iron-rich foods and drink plenty of water. 💤",
+  anxious: "It is completely normal to feel anxious about pregnancy and birth. You are not alone — many mothers feel this. Talk to your partner, mother, or midwife. Deep breathing and prayer or meditation can help calm your nervous system. If anxiety feels overwhelming, please tell your healthcare provider. 🤝",
+  sad: "Sadness during pregnancy — sometimes called antenatal depression — is real and common. Be gentle with yourself. Share your feelings with someone you trust. If you feel persistently sad, please speak to your midwife or doctor — there is help available and no shame in asking for it. 💛",
+  overwhelmed: "Take one breath at a time. You do not have to figure everything out today. Focus only on what you can do right now. Ask for help — from family, community, health workers. You were not meant to carry this alone. 🌸",
+};
+
+// ─── PROFILE ───
+let profile = { name: "Mama Amara", week: 22, country: "Kenya", age: "", location: "", symptoms: "", history: "", parity: "1st pregnancy", work: "", access: "", extra: "" };
+
+// ─── INTAKE STEPS ───
+function goStep(n) {
+  // Validate current step before advancing
+  if (n === 2) {
+    const name = document.getElementById('inputName').value.trim();
+    const country = document.getElementById('inputCountry').value;
+    if (!name) { alert('Please enter your name.'); return; }
+    if (!country) { alert('Please select your country.'); return; }
+  }
+  if (n === 3) {
+    const week = parseInt(document.getElementById('inputWeek').value);
+    if (!week || week < 1 || week > 42) { alert('Please enter a valid pregnancy week (1–42).'); return; }
+  }
+  document.querySelectorAll('.intake-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+}
+
+async function generateReport() {
+  // Collect all fields
+  const name = document.getElementById('inputName').value.trim() || 'Mama';
+  const age = document.getElementById('inputAge').value.trim();
+  const country = document.getElementById('inputCountry').value;
+  const location = document.getElementById('inputLocation').value.trim();
+  const week = parseInt(document.getElementById('inputWeek').value) || 22;
+  const parity = document.getElementById('inputParity').value;
+  const symptoms = document.getElementById('inputSymptoms').value.trim();
+  const history = document.getElementById('inputHistory').value.trim();
+  const work = document.getElementById('inputWork').value;
+  const access = document.getElementById('inputAccess').value;
+  const extra = document.getElementById('inputExtra').value.trim();
+
+  if (!week || week < 1 || week > 42) { alert('Please enter a valid week.'); return; }
+
+  profile = { name, age, week, country, location, symptoms, history, parity, work, access, extra };
+
+  // Close intake, show report section
+  document.getElementById('intakeOverlay').classList.add('hidden');
+  document.getElementById('reportSection').style.display = 'block';
+  document.getElementById('reportLoading').style.display = 'flex';
+  document.getElementById('reportBody').style.display = 'none';
+  document.getElementById('reportName').textContent = `${name}'s Pregnancy Report`;
+  document.getElementById('reportMeta').textContent = `Week ${week} · ${location || country}`;
+
+  // Update hero
+  document.getElementById('nameDisplay').textContent = name;
+  document.getElementById('chatName').textContent = name;
+  document.getElementById('weekBadge').textContent = `Week ${week}`;
+  document.getElementById('weekNum').textContent = week;
+  updateWeekData(week);
+
+  // Disable generate btn
+  const btn = document.querySelector('.btn-generate');
+  btn.disabled = true;
+  document.getElementById('genBtnText').textContent = '⏳ Generating…';
+
+  try {
+    const systemPrompt = `You are MamaCare, an expert African maternal health companion. 
+Analyze the mother's full profile and generate a comprehensive, structured pregnancy report.
+Respond ONLY with a valid JSON object (no markdown, no backticks, no preamble).
+
+JSON structure:
+{
+  "babyDevelopment": { "title": "...", "content": "2–3 sentences about baby size, development milestones, what baby can do this week" },
+  "nutritionAdvice": { "title": "...", "content": "3–4 sentences using locally available African foods for this country and week. Name specific foods.", "foods": ["food1", "food2", "food3", "food4", "food5"] },
+  "symptomAssessment": { "title": "...", "content": "Assess the symptoms described. Is anything concerning? Give practical home guidance for each. If danger signs, say so clearly.", "hasWarning": true or false },
+  "antenatalReminders": { "title": "...", "reminders": ["reminder 1", "reminder 2", "reminder 3", "reminder 4"] },
+  "mentalWellness": { "title": "...", "content": "2–3 sentences of emotional/mental health support relevant to her situation, week, and context." },
+  "sms": "Under 160 characters. Week XX: [key update]. [1 food tip]. [1 clinic reminder]. [1 danger sign warning]."
+}`;
+
+    const userPrompt = `Mother profile:
+Name: ${name}
+Age: ${age || 'not provided'}
+Country: ${country}
+Location: ${location || 'not provided'}
+Pregnancy week: ${week}
+Number of pregnancies: ${parity || 'not provided'}
+Current symptoms: ${symptoms || 'none reported'}
+Medical history: ${history || 'none reported'}
+Daily work/activity: ${work || 'not provided'}
+Healthcare access: ${access || 'not provided'}
+Additional context: ${extra || 'none'}
+
+Generate her personalised pregnancy report.`;
+
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: "user", content: userPrompt }]
+      })
+    });
+
+    const data = await res.json();
+    const raw = data.content?.map(b => b.text || '').join('') || '';
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const report = JSON.parse(clean);
+
+    renderReport(report, week);
+  } catch(e) {
+    renderFallbackReport(week);
+  }
+
+  btn.disabled = false;
+  document.getElementById('genBtnText').textContent = '✨ Generate My Report';
+}
+
+function renderReport(r, week) {
+  document.getElementById('reportLoading').style.display = 'none';
+  const body = document.getElementById('reportBody');
+  body.style.display = 'block';
+
+  const warningClass = r.symptomAssessment?.hasWarning ? 'warning-block' : '';
+  const warningNote = r.symptomAssessment?.hasWarning
+    ? `<div style="margin-top:10px; padding:10px 14px; background:rgba(196,98,45,0.1); border-radius:8px; font-size:0.83rem; color:var(--terracotta); font-weight:500;">⚠️ Please seek care at your nearest clinic as soon as possible.</div>` : '';
+
+  const foodTags = (r.nutritionAdvice?.foods || []).map(f =>
+    `<span style="display:inline-block; background:var(--cream); border:1.5px solid var(--sand); border-radius:20px; padding:4px 12px; font-size:0.8rem; margin:3px 2px; color:var(--earth);">🌿 ${f}</span>`
+  ).join('');
+
+  const reminders = (r.antenatalReminders?.reminders || []).map((rem, i) => {
+    const colors = ['orange','green','yellow','green'];
+    return `<div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(222,201,154,0.3);">
+      <div style="width:10px;height:10px;border-radius:50%;background:${i===0?'var(--terracotta)':i===2?'var(--saffron)':'var(--sage)'};flex-shrink:0;"></div>
+      <div style="font-size:0.87rem;color:var(--earth);">${rem}</div>
+    </div>`;
+  }).join('');
+
+  body.innerHTML = `
+    <div class="report-block" style="border-left:4px solid var(--deep-green);">
+      <div class="report-block-header">
+        <div class="report-block-icon" style="background:rgba(30,61,47,0.1);">🍼</div>
+        <div class="report-block-title">${r.babyDevelopment?.title || 'Baby Development – Week ' + week}</div>
+      </div>
+      <div class="report-block-body">${r.babyDevelopment?.content || ''}</div>
+    </div>
+
+    <div class="report-block" style="border-left:4px solid var(--sage);">
+      <div class="report-block-header">
+        <div class="report-block-icon" style="background:rgba(107,143,94,0.12);">🥗</div>
+        <div class="report-block-title">${r.nutritionAdvice?.title || 'Nutrition & Local Foods'}</div>
+      </div>
+      <div class="report-block-body">${r.nutritionAdvice?.content || ''}</div>
+      ${foodTags ? `<div style="margin-top:12px;">${foodTags}</div>` : ''}
+    </div>
+
+    <div class="report-block ${warningClass}" style="${!warningClass ? 'border-left:4px solid var(--saffron);' : ''}">
+      <div class="report-block-header">
+        <div class="report-block-icon" style="background:rgba(232,160,32,0.12);">${r.symptomAssessment?.hasWarning ? '⚠️' : '💊'}</div>
+        <div class="report-block-title">${r.symptomAssessment?.title || 'Symptom Assessment'}</div>
+      </div>
+      <div class="report-block-body">${r.symptomAssessment?.content || 'No symptoms reported. Continue with your routine antenatal care.'}</div>
+      ${warningNote}
+    </div>
+
+    <div class="report-block" style="border-left:4px solid var(--terracotta);">
+      <div class="report-block-header">
+        <div class="report-block-icon" style="background:rgba(196,98,45,0.1);">🏥</div>
+        <div class="report-block-title">${r.antenatalReminders?.title || 'Antenatal Reminders'}</div>
+      </div>
+      <div class="report-block-body">${reminders}</div>
+    </div>
+
+    <div class="report-block" style="border-left:4px solid var(--dusty-rose);">
+      <div class="report-block-header">
+        <div class="report-block-icon" style="background:rgba(212,132,122,0.12);">💛</div>
+        <div class="report-block-title">${r.mentalWellness?.title || 'Mental Wellness'}</div>
+      </div>
+      <div class="report-block-body">${r.mentalWellness?.content || ''}</div>
+    </div>
+
+    <div class="report-block sms-block">
+      <div class="report-block-header">
+        <div class="report-block-icon" style="background:rgba(255,255,255,0.15);">📱</div>
+        <div class="report-block-title">SMS Summary</div>
+      </div>
+      <div class="report-block-body">Share this short message with family or save for low-connectivity use:</div>
+      <div class="sms-text" id="smsText">${r.sms || ''}</div>
+      <button class="copy-sms-btn" onclick="copySMS()">📋 Copy SMS</button>
+    </div>
+  `;
+
+  // Scroll report into view
+  document.getElementById('reportSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderFallbackReport(week) {
+  document.getElementById('reportLoading').style.display = 'none';
+  const body = document.getElementById('reportBody');
+  body.style.display = 'block';
+  const d = getWeekData(week);
+  body.innerHTML = `
+    <div class="report-block" style="border-left:4px solid var(--deep-green);">
+      <div class="report-block-header"><div class="report-block-icon" style="background:rgba(30,61,47,0.1);">🍼</div><div class="report-block-title">Baby Development – Week ${week}</div></div>
+      <div class="report-block-body">Your baby is about the size of a <strong>${d.size}</strong> ${d.fruit}. ${d.devs[0]}. ${d.devs[1]}. Keep talking and singing to your baby — they can hear you!</div>
+    </div>
+    <div class="report-block" style="border-left:4px solid var(--sage);">
+      <div class="report-block-header"><div class="report-block-icon" style="background:rgba(107,143,94,0.12);">🥗</div><div class="report-block-title">Nutrition This Week</div></div>
+      <div class="report-block-body">Eat iron-rich foods like sukuma wiki, beans, and liver. Include orange-fleshed sweet potato and fruits like mango or papaya for vitamins. Drink at least 8 cups of boiled or clean water daily. Take your iron and folic acid tablet every day.</div>
+    </div>
+    <div class="report-block" style="border-left:4px solid var(--saffron);">
+      <div class="report-block-header"><div class="report-block-icon" style="background:rgba(232,160,32,0.12);">💊</div><div class="report-block-title">Symptom Guidance</div></div>
+      <div class="report-block-body">If you experience any of the following, go to a clinic immediately: heavy bleeding, severe headache, blurred vision, baby not moving, or fluid leaking. Mild nausea, swollen feet, and backache are common — rest and stay hydrated.</div>
+    </div>
+    <div class="report-block" style="border-left:4px solid var(--terracotta);">
+      <div class="report-block-header"><div class="report-block-icon" style="background:rgba(196,98,45,0.1);">🏥</div><div class="report-block-title">Antenatal Reminders</div></div>
+      <div class="report-block-body">
+        <div style="padding:8px 0;border-bottom:1px solid rgba(222,201,154,0.3);font-size:0.87rem;">• Take iron + folic acid tablet daily</div>
+        <div style="padding:8px 0;border-bottom:1px solid rgba(222,201,154,0.3);font-size:0.87rem;">• Attend your next ANC visit on schedule</div>
+        <div style="padding:8px 0;border-bottom:1px solid rgba(222,201,154,0.3);font-size:0.87rem;">• Sleep on your left side for better circulation</div>
+        <div style="padding:8px 0;font-size:0.87rem;">• Plan your birth with your midwife or health worker</div>
+      </div>
+    </div>
+    <div class="report-block sms-block">
+      <div class="report-block-header"><div class="report-block-icon" style="background:rgba(255,255,255,0.15);">📱</div><div class="report-block-title">SMS Summary</div></div>
+      <div class="sms-text" id="smsText">Wk${week}: Baby growing well, size of ${d.size}. Eat beans, sukuma wiki & fruits. Take iron tablet daily. Clinic visit due soon. Bleeding/severe headache→go to clinic NOW.</div>
+      <button class="copy-sms-btn" onclick="copySMS()">📋 Copy SMS</button>
+    </div>`;
+  document.getElementById('reportSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copySMS() {
+  const smsEl = document.getElementById('smsText');
+  if (smsEl) {
+    navigator.clipboard.writeText(smsEl.textContent).then(() => {
+      const btn = document.querySelector('.copy-sms-btn');
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy SMS', 2000);
+    });
+  }
+}
+
+function reopenIntake() {
+  // Pre-fill with existing values
+  if (profile.name) document.getElementById('inputName').value = profile.name;
+  if (profile.age) document.getElementById('inputAge').value = profile.age;
+  if (profile.country) document.getElementById('inputCountry').value = profile.country;
+  if (profile.location) document.getElementById('inputLocation').value = profile.location;
+  if (profile.week) document.getElementById('inputWeek').value = profile.week;
+  if (profile.parity) document.getElementById('inputParity').value = profile.parity;
+  if (profile.symptoms) document.getElementById('inputSymptoms').value = profile.symptoms;
+  if (profile.history) document.getElementById('inputHistory').value = profile.history;
+  if (profile.work) document.getElementById('inputWork').value = profile.work;
+  if (profile.access) document.getElementById('inputAccess').value = profile.access;
+  if (profile.extra) document.getElementById('inputExtra').value = profile.extra;
+  goStep(1);
+  document.getElementById('intakeOverlay').classList.remove('hidden');
+}
+
+function quickUpdateProfile() {
+  const name = document.getElementById('editName').value.trim();
+  const week = parseInt(document.getElementById('editWeek').value);
+  if (name) { profile.name = name; document.getElementById('nameDisplay').textContent = name; document.getElementById('chatName').textContent = name; }
+  if (week) { profile.week = week; document.getElementById('weekBadge').textContent = `Week ${week}`; document.getElementById('weekNum').textContent = week; updateWeekData(week); }
+  document.getElementById('setupSection').classList.remove('visible');
+}
+
+function getWeekData(week) {
+  const keys = Object.keys(weekData).map(Number).sort((a,b)=>a-b);
+  const closest = keys.reduce((prev, cur) => Math.abs(cur - week) < Math.abs(prev - week) ? cur : prev);
+  return weekData[closest];
+}
+
+function updateWeekData(week) {
+  const d = getWeekData(week);
+  document.getElementById('sizeEmoji').textContent = d.fruit;
+  document.getElementById('sizeText').textContent = `Size of a ${d.size}`;
+  document.getElementById('weightText').textContent = d.weight;
+  document.getElementById('trimesterLabel').textContent = `${d.trimester} Trimester`;
+  document.getElementById('trimesterName').textContent = `${d.trimester} Trimester`;
+  document.getElementById('weekInfo').innerHTML = `${Math.max(0, 40 - week)} weeks remaining · <span>size of a ${d.size} ${d.fruit}</span>`;
+  const devList = document.getElementById('developmentList');
+  devList.innerHTML = d.devs.map(item => `<li>${item}</li>`).join('');
+  const pct = week / 40;
+  const circ = 163;
+  document.getElementById('progressRing').style.strokeDashoffset = circ - (circ * pct);
+  document.getElementById('triFill').style.width = (pct * 100) + '%';
+}
+
+// Initial state — show intake overlay
+updateWeekData(22);
+
+// Toggle quick-edit on logo click
+document.querySelector('.logo').addEventListener('click', () => {
+  if (!document.getElementById('intakeOverlay').classList.contains('hidden')) return;
+  document.getElementById('setupSection').classList.toggle('visible');
+});
+
+// ─── NAVIGATION ───
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+// ─── REMINDERS ───
+function toggleReminder(id) {
+  document.getElementById(id).classList.toggle('done');
+}
+
+// ─── SYMPTOMS ───
+let hasWarning = false;
+function toggleSymptom(chip, isWarning) {
+  chip.classList.toggle('selected');
+  updateSymptomAdvice();
+}
+
+function updateSymptomAdvice() {
+  const selected = [...document.querySelectorAll('.chip.selected')];
+  const warnings = selected.filter(c => c.classList.contains('warning'));
+  const regular = selected.filter(c => !c.classList.contains('warning'));
+
+  const banner = document.getElementById('riskBanner');
+  banner.classList.toggle('show', warnings.length > 0);
+
+  const adviceDiv = document.getElementById('symptomAdvice');
+  if (regular.length > 0) {
+    const html = regular.map(c => {
+      const key = c.textContent.trim();
+      const tip = symptomAdvice[key] || "This symptom is worth mentioning to your midwife at your next visit.";
+      return `<div class="card" style="margin-bottom:10px;">
+        <div class="card-label">${key}</div>
+        <div class="card-body">${tip}</div>
+      </div>`;
+    }).join('');
+    adviceDiv.innerHTML = html;
+  } else {
+    adviceDiv.innerHTML = '';
+  }
+}
+
+// ─── WELLBEING ───
+function selectMood(btn, mood) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const tip = document.getElementById('wellbeingTip');
+  tip.textContent = wellbeingMessages[mood] || '';
+  tip.classList.add('show');
+}
+
+// ─── CHAT ───
+let pinnedMessages = [];
+
+function toggleSMS(btn) {
+  const smsDiv = btn.nextElementSibling;
+  smsDiv.classList.toggle('show');
+  btn.textContent = smsDiv.classList.contains('show') ? '📱 Hide SMS version' : '📱 SMS version';
+}
+
+function pinMessage(btn) {
+  const bubble = btn.parentElement;
+  const text = bubble.textContent.replace('📌', '').trim();
+  pinnedMessages.push(text.substring(0, 200));
+  btn.classList.add('pinned');
+  btn.title = 'Pinned!';
+  updatePinnedSection();
+}
+
+function updatePinnedSection() {
+  const section = document.getElementById('pinnedSection');
+  const list = document.getElementById('pinnedList');
+  if (pinnedMessages.length > 0) {
+    section.classList.add('has-pins');
+    list.innerHTML = pinnedMessages.map(m =>
+      `<div class="pinned-item">${m.substring(0, 200)}…</div>`
+    ).join('');
+  }
+}
+
+function quickTopic(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  const messages = document.getElementById('chatMessages');
+
+  // User message
+  messages.innerHTML += `
+    <div class="msg user">
+      <div class="msg-avatar">👩🏾</div>
+      <div class="msg-bubble">${text}</div>
+    </div>`;
+
+  // Typing
+  const typingId = 'typing_' + Date.now();
+  messages.innerHTML += `
+    <div class="msg ai" id="${typingId}">
+      <div class="msg-avatar">🌿</div>
+      <div class="msg-bubble"><div class="typing-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+    </div>`;
+  messages.scrollTop = messages.scrollHeight;
+
+  try {
+    const systemPrompt = `You are MamaCare, an expert African maternal health companion. 
+The mother's name is ${profile.name}, age ${profile.age || 'unknown'}, pregnancy week ${profile.week}, based in ${profile.location || profile.country}.
+Medical history: ${profile.history || 'none reported'}. Current symptoms: ${profile.symptoms || 'none reported'}. Activity: ${profile.work || 'unknown'}.
+Your role: Track pregnancy progress, explain baby development, provide nutrition guidance using locally available African foods (e.g. sukuma wiki, ugali, omena, groundnuts, sweet potato, millet), monitor symptoms, identify risks, generate antenatal reminders, support mental wellbeing.
+Style: Warm, culturally relevant, medically responsible, easy to understand. Use common local food names. Address the mother respectfully.
+ALWAYS end with an SMS-friendly summary labeled "📱 SMS:" that is under 160 characters.
+If the user describes a danger sign (bleeding, severe headache, blurred vision, baby not moving, fluid leaking, severe abdominal pain), urge them IMMEDIATELY to seek care.
+Keep responses concise — 3–5 sentences of guidance maximum, then the SMS summary.`;
+
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: "user", content: text }]
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.content?.map(b => b.text || '').join('') || "I'm here for you. Please try again.";
+
+    // Split off SMS part
+    const smsPart = reply.match(/📱 SMS:(.*?)($|\n)/s);
+    const smsText = smsPart ? smsPart[1].trim() : '';
+    const mainText = reply.replace(/📱 SMS:.*$/s, '').trim();
+
+    document.getElementById(typingId).remove();
+    messages.innerHTML += `
+      <div class="msg ai">
+        <div class="msg-avatar">🌿</div>
+        <div>
+          <div class="msg-bubble">
+            ${mainText.replace(/\n/g, '<br>')}
+            <button class="pin-btn" onclick="pinMessage(this)" title="Pin this message">📌</button>
+          </div>
+          ${smsText ? `<div class="sms-toggle" onclick="toggleSMS(this)">📱 SMS version</div>
+          <div class="sms-version">${smsText}</div>` : ''}
+        </div>
+      </div>`;
+  } catch(e) {
+    document.getElementById(typingId).remove();
+    messages.innerHTML += `
+      <div class="msg ai">
+        <div class="msg-avatar">🌿</div>
+        <div class="msg-bubble">
+          I'm here with you, ${profile.name}. For the most accurate guidance, please visit your nearest clinic or speak to your midwife. You can also call your national maternal health helpline.
+          <button class="pin-btn" onclick="pinMessage(this)" title="Pin this message">📌</button>
+        </div>
+      </div>`;
+  }
+
+  messages.scrollTop = messages.scrollHeight;
+}
+</script>
+</body>
+</html>
