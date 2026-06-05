@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FinSoko — Agent Workflow Simulation</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0f1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1f2d45;
+    --accent: #00c896;
+    --accent2: #0077ff;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --scout: #6366f1;
+    --guardian: #0ea5e9;
+    --hunter: #10b981;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .brand h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+  .brand p  { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; }
+
+  .badge {
+    margin-left: auto;
+    background: rgba(0,200,150,.12);
+    color: var(--accent);
+    border: 1px solid rgba(0,200,150,.3);
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 48px 20px 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero h2 {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #fff;
+  }
+  .hero h2 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 540px;
+    margin-inline: auto;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+
+  /* ── STEP CARD ── */
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 28px;
+  }
+
+  .step-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .step-num {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .step-label h3 { font-size: 16px; font-weight: 600; color: var(--text); }
+
+  /* ── SMS BUTTONS ── */
+  .sms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .sms-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: all .2s;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+  }
+  .sms-btn:hover { border-color: var(--accent); background: rgba(0,200,150,.07); }
+  .sms-btn.selected { border-color: var(--accent); background: rgba(0,200,150,.12); }
+  .sms-btn .icon { font-size: 20px; margin-bottom: 6px; display: block; }
+  .sms-btn .label { font-weight: 500; display: block; }
+  .sms-btn .sub { color: var(--muted); font-size: 11px; margin-top: 2px; }
+
+  /* ── SEND BUTTON ── */
+  .send-btn {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity .2s, transform .1s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .send-btn:hover { opacity: .9; transform: translateY(-1px); }
+  .send-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+  /* ── PIPELINE ── */
+  .pipeline {
+    display: grid;
+    grid-template-columns: 1fr 32px 1fr 32px 1fr;
+    gap: 0;
+    align-items: start;
+    margin-bottom: 22px;
+  }
+
+  .agent-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    transition: border-color .3s;
+  }
+  .agent-box.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent)22; }
+  .agent-box.done   { border-color: #1f4; }
+  .agent-box.error  { border-color: var(--danger); }
+
+  .agent-icon { font-size: 22px; margin-bottom: 6px; }
+  .agent-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .agent-role { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+
+  .agent-status {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    min-height: 18px;
+  }
+
+  .pride-note {
+    margin-top: 10px;
+    background: rgba(245,158,11,.08);
+    border: 1px solid rgba(245,158,11,.25);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 11px;
+    color: #fbbf24;
+    line-height: 1.5;
+  }
+
+  .arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    font-size: 18px;
+    padding-top: 20px;
+  }
+
+  /* ── SMS RESPONSE ── */
+  .sms-response {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 4px;
+  }
+  .sms-response .label {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sms-response .label::before {
+    content: '📲';
+    font-size: 14px;
+  }
+  .sms-response .body {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 22px;
+  }
+
+  .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    padding: 9px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .reset-btn:hover { border-color: var(--text); color: var(--text); }
+
+  /* ── GUARD LOG ── */
+  .guard-log {
+    background: #050a10;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    min-height: 80px;
+    max-height: 220px;
+    overflow-y: auto;
+    line-height: 1.8;
+  }
+  .guard-log .empty { color: var(--muted); }
+  .guard-log .log-line { color: #94a3b8; }
+  .guard-log .log-line.ok     { color: var(--accent); }
+  .guard-log .log-line.warn   { color: var(--warn); }
+  .guard-log .log-line.block  { color: var(--danger); }
+  .guard-log .log-line.info   { color: var(--accent2); }
+
+  /* ── SPINNER ── */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+
+  /* ── FOOTER ── */
+  .stack-footer {
+    margin-top: 28px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+  }
+  .stack-tag {
+    background: rgba(99,102,241,.12);
+    border: 1px solid rgba(99,102,241,.3);
+    color: #a5b4fc;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+  }
+  .dpa-badge {
+    margin-left: auto;
+    background: rgba(0,200,150,.1);
+    border: 1px solid rgba(0,200,150,.3);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  @media (max-width: 600px) {
+    .pipeline { grid-template-columns: 1fr; }
+    .arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">FS</div>
+  <div class="brand">
+    <h1>FinSoko</h1>
+    <p>Option C · Agent Workflow Simulation</p>
+  </div>
+  <span class="badge">AI Safari Capstone · PRIDE Loop Prototype</span>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h2>Scout → Guardian → Hunter <em>Agent Workflow</em></h2>
+  <p>Simulates the full agent pipeline with PRIDE Loop pause points and GUARD safety rails. Built for African SACCO &amp; microfinance contexts.</p>
+</div>
+
+<div class="container">
+
+  <!-- STEP 1: SMS INPUT -->
+  <div class="step-card">
+    <div class="step-label">
+      <div class="step-num">1</div>
+      <h3>Member SMS Input</h3>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Simulate a member SMS message to FinSoko:</p>
+
+    <div class="sms-grid" id="smsGrid">
+      <button class="sms-btn" data-id="school">
+        <span class="icon">🏫</span>
+        <span class="label">School fees (Swahili)</span>
+        <span class="sub">"Nataka mkopo wa ada"</span>
+      </button>
+      <button class="sms-btn" data-id="small">
+        <span class="icon">💳</span>
+        <span class="label">Small loan request</span>
+        <span class="sub">KES 5,000 emergency</span>
+      </button>
+      <button class="sms-btn" data-id="large">
+        <span class="icon">👨‍👩‍👧</span>
+        <span class="label">Large family loan</span>
+        <span class="sub">KES 80,000 + 3 deps</span>
+      </button>
+      <button class="sms-btn" data-id="debt">
+        <span class="icon">🚨</span>
+        <span class="label">Debt collector flag 🚨</span>
+        <span class="sub">Threatening language</span>
+      </button>
+      <button class="sms-btn" data-id="harvest">
+        <span class="icon">🌾</span>
+        <span class="label">Harvest input loan</span>
+        <span class="sub">Seasonal agri credit</span>
+      </button>
+    </div>
+
+    <button class="send-btn" id="sendBtn" disabled>Send SMS</button>
+  </div>
+
+  <!-- STEP 2: AGENT PIPELINE -->
+  <div class="step-card">
+    <div class="step-label">
+      <div class="step-num">2</div>
+      <h3>Agent Pipeline</h3>
+    </div>
+
+    <div class="pipeline">
+      <!-- Scout -->
+      <div class="agent-box" id="scoutBox">
+        <div class="agent-icon">🔍</div>
+        <div class="agent-name">Scout Agent</div>
+        <div class="agent-role">Financial Literacy Coach</div>
+        <div class="agent-status" id="scoutStatus">Waiting for SMS...</div>
+        <div class="pride-note">⏸ <strong>PRIDE Loop — Pause Point</strong><br>Verify member opt-in consent before passing data to Guardian Agent.</div>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <!-- Guardian -->
+      <div class="agent-box" id="guardianBox">
+        <div class="agent-icon">🛡️</div>
+        <div class="agent-name">Guardian Agent</div>
+        <div class="agent-role">Loan Triage</div>
+        <div class="agent-status" id="guardianStatus">Waiting...</div>
+        <div class="pride-note">⏸ <strong>PRIDE Loop — Pause Point</strong><br>2+ children under 5 detected. Mandatory human review before proceeding.</div>
+      </div>
+
+      <div class="arrow">→</div>
+
+      <!-- Hunter -->
+      <div class="agent-box" id="hunterBox">
+        <div class="agent-icon">🎯</div>
+        <div class="agent-name">Hunter Agent</div>
+        <div class="agent-role">Human-in-Loop Coordinator</div>
+        <div class="agent-status" id="hunterStatus">Waiting...</div>
+        <div class="pride-note">⏸ <strong>PRIDE Loop — Pause Point</strong><br>Officer must respond within 15 mins or system auto-escalates to senior officer.</div>
+      </div>
+    </div>
+
+    <!-- SMS Response -->
+    <div class="sms-response">
+      <div class="label">FinSoko → Member SMS Response<br><small style="font-family:sans-serif;color:var(--muted)">Auto-generated outbound message</small></div>
+      <div class="body" id="smsResponse">Awaiting pipeline completion…</div>
+    </div>
+
+    <button class="reset-btn" id="resetBtn">↺ Reset simulation</button>
+  </div>
+
+  <!-- STEP 3: GUARD LOG -->
+  <div class="step-card">
+    <div class="step-label">
+      <div class="step-num">3</div>
+      <h3>GUARD Safety Rail Log</h3>
+    </div>
+    <div class="guard-log" id="guardLog">
+      <span class="empty">— No activity yet. Send an SMS to start the simulation.</span>
+    </div>
+  </div>
+
+  <!-- STACK FOOTER -->
+  <div class="stack-footer">
+    <span style="color:var(--muted);font-size:11px;font-family:'Space Mono',monospace;">Option C Stack:</span>
+    <span class="stack-tag">n8n workflow engine</span>
+    <span class="stack-tag">Google Sheets</span>
+    <span class="stack-tag">Twilio SMS</span>
+    <span class="stack-tag">Slack /approve-cycle</span>
+    <span class="stack-tag">AWS Africa (Cape Town)</span>
+    <span class="dpa-badge">✓ Kenya DPA 2022 compliant</span>
+  </div>
+
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────
+const scenarios = {
+  school: {
+    label: "School Fees (Swahili)",
+    sms: "Habari. Nataka mkopo wa ada za shule. KES 15,000. Jina langu ni Grace Wanjiku.",
+    scout: { delay: 1200, text: "✓ Intent: School fees loan • KES 15,000 • Swahili detected • Member ID: GW-4421", ok: true },
+    guardian: { delay: 1800, text: "✓ Risk: LOW • Score 72 • No dependants under 5 • Eligible for school-fees product", ok: true },
+    hunter: { delay: 1500, text: "✓ Offer generated • KES 15,000 @ 1.8%/mo • Repayment: 6 months", ok: true },
+    response: "Habari Grace! Ombi lako la KES 15,000 limepokelewa. Mkopo wako umeidhinishwa. Tafadhali piga simu ofisi kwa 0800-FINSOKO ili kukamilisha. — FinSoko",
+    guardLines: [
+      { cls: "info", text: "[GUARD] SMS received from +2547XXXXXX — scanning content..." },
+      { cls: "ok",   text: "[GUARD] ✓ Language detected: Swahili — literacy flag: CLEAR" },
+      { cls: "ok",   text: "[GUARD] ✓ Consent opt-in verified — member since 2021-03" },
+      { cls: "ok",   text: "[GUARD] ✓ No coercive language detected" },
+      { cls: "ok",   text: "[GUARD] ✓ KYC match — Grace Wanjiku · Tier 2 member" },
+      { cls: "ok",   text: "[GUARD] ✓ Pipeline completed — offer dispatched via Twilio" }
+    ]
+  },
+  small: {
+    label: "Small Emergency Loan",
+    sms: "Hi FinSoko, I need KES 5000 emergency loan asap. My name is Brian Odhiambo.",
+    scout: { delay: 1000, text: "✓ Intent: Emergency cash • KES 5,000 • English • Member ID: BO-2210", ok: true },
+    guardian: { delay: 1600, text: "✓ Risk: LOW • Score 81 • Microloan threshold met • Fast-track eligible", ok: true },
+    hunter: { delay: 1200, text: "✓ Fast-track approved • KES 5,000 disbursed to M-Pesa • Ref: FSK-884421", ok: true },
+    response: "Hi Brian! Your KES 5,000 emergency loan is APPROVED. Funds sent to your M-Pesa now. Ref: FSK-884421. Repay within 30 days. — FinSoko",
+    guardLines: [
+      { cls: "info", text: "[GUARD] SMS received — fast-track scan initiated..." },
+      { cls: "ok",   text: "[GUARD] ✓ No prohibited keywords detected" },
+      { cls: "ok",   text: "[GUARD] ✓ Member in good standing — 0 defaults" },
+      { cls: "ok",   text: "[GUARD] ✓ Amount within microloan ceiling (KES 10,000)" },
+      { cls: "ok",   text: "[GUARD] ✓ M-Pesa number verified against KYC record" },
+      { cls: "ok",   text: "[GUARD] ✓ Fast-track pipeline complete — disbursed 14:32:07" }
+    ]
+  },
+  large: {
+    label: "Large Family Loan",
+    sms: "I want a loan of KES 80,000. I have 3 young children. Mary Achieng.",
+    scout: { delay: 1300, text: "✓ Intent: Large personal loan • KES 80,000 • 3 dependants noted • Member ID: MA-0093", ok: true },
+    guardian: { delay: 2000, text: "⚠ HOLD — 3 dependants under 5 detected • Mandatory human review triggered • Score: 56", ok: false },
+    hunter: { delay: 1800, text: "⏸ Escalated to Loan Officer: Amina Hassan • 15-min SLA clock started", ok: true },
+    response: "Dear Mary, your application is under review by our loan officer. You will receive a call within 15 minutes. Ref: FSK-093-LRG. — FinSoko",
+    guardLines: [
+      { cls: "info", text: "[GUARD] Large loan flag — enhanced due-diligence scan..." },
+      { cls: "ok",   text: "[GUARD] ✓ Member identity verified — Mary Achieng · Tier 1" },
+      { cls: "warn", text: "[GUARD] ⚠ PRIDE trigger: 3 dependants under 5 — vulnerability flag raised" },
+      { cls: "warn", text: "[GUARD] ⚠ Debt-to-income ratio: 68% — above soft ceiling (60%)" },
+      { cls: "warn", text: "[GUARD] ⚠ Automatic approval BLOCKED — routing to human review" },
+      { cls: "info", text: "[GUARD] → Slack alert sent to Loan Officer: Amina Hassan" },
+      { cls: "info", text: "[GUARD] → 15-min SLA timer started at 14:33:02" }
+    ]
+  },
+  debt: {
+    label: "Debt Collector Flag 🚨",
+    sms: "Tell Mary she must pay or we will take her property. Final warning. — DC Agent",
+    scout: { delay: 800, text: "🚨 ALERT: External debt-collector language detected • Threat keyword match", ok: false },
+    guardian: { delay: 500, text: "🚫 BLOCKED — coercive/threatening message • Kenya DPA 2022 §31 violation", ok: false },
+    hunter: { delay: 400, text: "🚫 Pipeline halted • Incident logged • Compliance team notified", ok: false },
+    response: "This message has been blocked. FinSoko does not permit coercive debt collection communications. Incident reference: FSK-SEC-0042. — FinSoko Compliance",
+    guardLines: [
+      { cls: "info",  text: "[GUARD] Incoming SMS scan — priority mode..." },
+      { cls: "block", text: "[GUARD] 🚨 THREAT keywords detected: 'must pay', 'take her property', 'final warning'" },
+      { cls: "block", text: "[GUARD] 🚨 BLOCKED — Kenya DPA 2022 §31: Prohibited debt collection language" },
+      { cls: "block", text: "[GUARD] 🚨 Sender number flagged and quarantined" },
+      { cls: "warn",  text: "[GUARD] → Incident FSK-SEC-0042 logged to compliance ledger" },
+      { cls: "warn",  text: "[GUARD] → Email alert sent to Chief Compliance Officer" },
+      { cls: "info",  text: "[GUARD] → Member Mary notified of incident via safe channel" }
+    ]
+  },
+  harvest: {
+    label: "Harvest Input Loan",
+    sms: "Nahitaji mkopo wa pembejeo za kilimo. Ekari 2, mahindi. John Mutua.",
+    scout: { delay: 1400, text: "✓ Intent: Agri input credit • 2 acres maize • Swahili • Member ID: JM-5517", ok: true },
+    guardian: { delay: 1900, text: "✓ Risk: MEDIUM • Seasonal crop risk noted • Crop insurance check initiated", ok: true },
+    hunter: { delay: 1600, text: "✓ Agri loan offer: KES 12,000 • Tied to harvest calendar • Insurance: APA Kilimo", ok: true },
+    response: "Habari John! Mkopo wa pembejeo KES 12,000 umeidhinishwa. Bima ya mazao (APA Kilimo) imeunganishwa. Tafadhali tembelea wakala wetu wa karibu. — FinSoko",
+    guardLines: [
+      { cls: "info", text: "[GUARD] Agricultural loan scan — seasonal risk module active..." },
+      { cls: "ok",   text: "[GUARD] ✓ Member ID: JM-5517 — John Mutua, Machakos County" },
+      { cls: "ok",   text: "[GUARD] ✓ Land registration cross-checked — 2.1 acres confirmed" },
+      { cls: "warn", text: "[GUARD] ⚠ Seasonal risk: long-rains variance 23% — insurance recommended" },
+      { cls: "ok",   text: "[GUARD] ✓ APA Kilimo crop insurance bundle auto-attached" },
+      { cls: "ok",   text: "[GUARD] ✓ Pipeline complete — disbursement schedule set to planting season" }
+    ]
+  }
+};
+
+// ── STATE ─────────────────────────────────────────────────────────
+let selectedId = null;
+let running = false;
+
+// ── ELEMENTS ─────────────────────────────────────────────────────
+const smsGrid     = document.getElementById('smsGrid');
+const sendBtn     = document.getElementById('sendBtn');
+const resetBtn    = document.getElementById('resetBtn');
+const guardLog    = document.getElementById('guardLog');
+const smsResponse = document.getElementById('smsResponse');
+const scoutBox    = document.getElementById('scoutBox');
+const guardianBox = document.getElementById('guardianBox');
+const hunterBox   = document.getElementById('hunterBox');
+const scoutStatus    = document.getElementById('scoutStatus');
+const guardianStatus = document.getElementById('guardianStatus');
+const hunterStatus   = document.getElementById('hunterStatus');
+
+// ── HELPERS ───────────────────────────────────────────────────────
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function setStatus(el, box, text, state) {
+  el.textContent = text;
+  box.className = 'agent-box';
+  if (state) box.classList.add(state);
+}
+
+function addLog(lines) {
+  // clear empty message on first log
+  const empty = guardLog.querySelector('.empty');
+  if (empty) empty.remove();
+
+  lines.forEach(({ cls, text }) => {
+    const div = document.createElement('div');
+    div.className = `log-line ${cls}`;
+    div.textContent = text;
+    guardLog.appendChild(div);
+    guardLog.scrollTop = guardLog.scrollHeight;
+  });
+}
+
+function spinner(el) {
+  el.innerHTML = '<span class="spinner"></span> Processing…';
+}
+
+// ── SELECT SMS ────────────────────────────────────────────────────
+smsGrid.querySelectorAll('.sms-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (running) return;
+    smsGrid.querySelectorAll('.sms-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedId = btn.dataset.id;
+    sendBtn.disabled = false;
+  });
+});
+
+// ── RUN PIPELINE ──────────────────────────────────────────────────
+sendBtn.addEventListener('click', async () => {
+  if (!selectedId || running) return;
+  const sc = scenarios[selectedId];
+  running = true;
+  sendBtn.disabled = true;
+
+  // reset displays
+  guardLog.innerHTML = '';
+  smsResponse.textContent = 'Awaiting pipeline completion…';
+  setStatus(scoutStatus, scoutBox, 'Waiting for SMS...', '');
+  setStatus(guardianStatus, guardianBox, 'Waiting...', '');
+  setStatus(hunterStatus, hunterBox, 'Waiting...', '');
+
+  // ── SCOUT
+  await sleep(400);
+  spinner(scoutStatus);
+  scoutBox.className = 'agent-box active';
+  addLog([sc.guardLines[0]]);
+
+  await sleep(sc.scout.delay);
+  addLog(sc.guardLines.slice(1, 3));
+  setStatus(scoutStatus, scoutBox, sc.scout.text, sc.scout.ok ? 'done' : 'error');
+
+  // ── GUARDIAN
+  await sleep(500);
+  spinner(guardianStatus);
+  guardianBox.className = 'agent-box active';
+  addLog([sc.guardLines[3]]);
+
+  await sleep(sc.guardian.delay);
+  addLog([sc.guardLines[4]]);
+  setStatus(guardianStatus, guardianBox, sc.guardian.text, sc.guardian.ok ? 'done' : 'error');
+
+  // ── HUNTER
+  await sleep(500);
+  spinner(hunterStatus);
+  hunterBox.className = 'agent-box active';
+  addLog([sc.guardLines[5]]);
+
+  await sleep(sc.hunter.delay);
+  if (sc.guardLines[6]) addLog([sc.guardLines[6]]);
+  setStatus(hunterStatus, hunterBox, sc.hunter.text, sc.hunter.ok ? 'done' : 'error');
+
+  // ── RESPONSE
+  await sleep(400);
+  smsResponse.textContent = sc.response;
+
+  running = false;
+  sendBtn.disabled = false;
+});
+
+// ── RESET ─────────────────────────────────────────────────────────
+resetBtn.addEventListener('click', () => {
+  if (running) return;
+  selectedId = null;
+  smsGrid.querySelectorAll('.sms-btn').forEach(b => b.classList.remove('selected'));
+  sendBtn.disabled = true;
+  guardLog.innerHTML = '<span class="empty">— No activity yet. Send an SMS to start the simulation.</span>';
+  smsResponse.textContent = 'Awaiting pipeline completion…';
+  setStatus(scoutStatus, scoutBox, 'Waiting for SMS...', '');
+  setStatus(guardianStatus, guardianBox, 'Waiting...', '');
+  setStatus(hunterStatus, hunterBox, 'Waiting...', '');
+});
+</script>
+</body>
+</html>
